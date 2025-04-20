@@ -1,5 +1,5 @@
 import React from "react";
-import { Activity, SingleLimbReps, StrengthSet } from "../types";
+import { Activity, SingleLimbReps } from "../types";
 
 interface WeightTrainingProps {
   activity: Activity;

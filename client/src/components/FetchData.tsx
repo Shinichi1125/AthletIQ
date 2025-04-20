@@ -23,7 +23,7 @@ const FetchData: React.FC = () => {
     fetchData();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>Loading Data...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
