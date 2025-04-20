@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'client/**'
+      - '.github/workflows/deploy-client.yml'
+
+permissions:
+  contents: write
 
 jobs:
   deploy:
