@@ -24,6 +24,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Configure Git identity
+        run: |
+          git config --global user.name "stakagi"
+          git config --global user.email "37083992+Shinichi1125@users.noreply.github.com"
+
       - name: Build and deploy
         run: npm run deploy
         env:
