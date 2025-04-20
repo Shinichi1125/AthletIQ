@@ -1,4 +1,5 @@
 {
+  "homepage": "https://Shinichi1125.github.io/AthletIQ",
   "name": "client",
   "version": "0.1.0",
   "private": true,
@@ -21,6 +22,8 @@
     "start": "cross-env BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -42,6 +45,7 @@
     ]
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "gh-pages": "^6.3.0"
   }
 }

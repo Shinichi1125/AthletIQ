@@ -3,7 +3,6 @@ import FetchData from "./components/FetchData";
 
 const App: React.FC = () => (
   <div>
-    <h1>Training Data Viewer</h1>
     <FetchData />
   </div>
 );

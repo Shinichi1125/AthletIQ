@@ -28,7 +28,7 @@ const FetchData: React.FC = () => {
 
   return (
     <div>
-      <h1>Training Data</h1>
+      <h1>Training Data Viewer</h1>
       <TrainingList trainingDays={data} onSelect={setSelectedDay} />
       {selectedDay && <TrainingDetails trainingDay={selectedDay} />}
     </div>
