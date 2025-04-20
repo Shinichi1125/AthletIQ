@@ -23,7 +23,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d build -u \"github-actions-bot <41898282+github-actions[bot]@users.noreply.github.com>\" -r https://x-access-token:${GH_TOKEN}@github.com/Shinichi1125/AthletIQ.git",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
