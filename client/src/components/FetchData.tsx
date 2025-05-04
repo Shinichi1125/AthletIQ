@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import "../i18n";
+import { useTranslation } from "react-i18next";
 import { fetchTrainingData } from "../utils/api";
 import TrainingList from "./TrainingList";
 import TrainingDetails from "./TrainingDetails";
 
 const FetchData: React.FC = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState<any[]>([]);
   const [selectedDay, setSelectedDay] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -23,12 +26,12 @@ const FetchData: React.FC = () => {
     fetchData();
   }, []);
 
-  if (loading) return <p>Loading Data...</p>;
+  if (loading) return <p>{t("loading")}</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
-      <h1>Training Data Viewer</h1>
+      <h1>{t("title")}</h1>
       <TrainingList trainingDays={data} onSelect={setSelectedDay} />
       {selectedDay && <TrainingDetails trainingDay={selectedDay} />}
     </div>
