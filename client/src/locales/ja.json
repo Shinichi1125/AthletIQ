@@ -1,4 +1,24 @@
 {
   "loading": "データを読み込み中...",
-  "title": "トレーニング記録一覧"
+  "title": "トレーニング記録一覧",
+  "trainingTimelineHeader": "トレーニングタイムライン",
+  "weather": "天気",
+  "location": "場所",
+  "trainingTime": "練習時間",
+  "activities": "練習内容",
+  "shoes": "シューズ",
+  "time": "タイム",
+  "steps": "歩数",
+  "splits": "スプリットタイム",
+  "splitDifference": "前後半差",
+  "First_Half": "前半",
+  "Second_Half": "後半",
+  "unitSeconds": "秒",
+  "unitSteps": "歩",
+  "weight": "重量",
+  "reps": "レップ数",
+  "Left_Arm": "左手",
+  "Right_Arm": "右手",
+  "Left_Leg": "左脚",
+  "Right_Leg": "右脚"
 }

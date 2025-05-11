@@ -1,19 +1,22 @@
 import React from "react";
 import { Activity, SingleLimbReps, StrengthSet } from "../types";
+import { useTranslation } from "react-i18next";
 
 interface SingleLimbProps {
   activity: Activity;
 }
 
 const SingleLimbExerciseDetails: React.FC<SingleLimbProps> = ({ activity }) => {
+  const { t } = useTranslation();
   const strengthSets = activity.Sets as StrengthSet[];
+  const weight = activity.Weight ? ` ${activity.Weight.Value}${activity.Weight.Unit}` : "";
+  const condition = activity.Condition ? ` (${activity.Condition})` : "";
 
   return (
     <div>
-      <h4>{activity.Activity}</h4>
+      <h4>{activity.Activity}{weight}{condition}</h4>
       {strengthSets && (
         <>
-          <h5>Sets:</h5>
           <ul>
             {strengthSets.map((set, index) => (
               <li key={index}>
@@ -28,13 +31,13 @@ const SingleLimbExerciseDetails: React.FC<SingleLimbProps> = ({ activity }) => {
                     <>
                       {Object.entries(set.Reps as SingleLimbReps).map(([side, reps]) => (
                         <li key={side}>
-                          {side}: {reps} reps
+                          {t(side)} {(t("reps"))}: {reps}
                         </li>
                       ))}
                     </>
                   )}
                   {typeof set.Reps === "number" && (
-                    <li>Reps: {set.Reps}</li>
+                    <li>{t("reps")}: {set.Reps}</li>
                   )}
                   {set.Weight && (
                     <li>

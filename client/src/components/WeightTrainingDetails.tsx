@@ -1,11 +1,14 @@
 import React from "react";
 import { Activity, SingleLimbReps } from "../types";
+import { useTranslation } from "react-i18next";
 
 interface WeightTrainingProps {
   activity: Activity;
 }
 
 const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
+  const { t } = useTranslation();
+
   return (
     <div>
       <h4>{activity.Activity}</h4>
@@ -16,23 +19,22 @@ const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
 
       {activity.Weight && (
         <p>
-          <strong>Weight:</strong> {activity.Weight.Value} {activity.Weight.Unit}
+          <strong>{t("weight")}:</strong> {activity.Weight.Value}{activity.Weight.Unit}
         </p>
       )}
 
       {activity.Distance && (
         <p>
-          <strong>Distance:</strong> {activity.Distance.Value} {activity.Distance.Unit}
+          <strong>Distance:</strong> {activity.Distance.Value}{activity.Distance.Unit}
         </p>
       )}
 
       {activity.Reps && (
-        <p><strong>Reps:</strong> {activity.Reps}</p>
+        <p><strong>{t("reps")}:</strong> {activity.Reps}</p>
       )}
 
       {activity.Sets && (
         <>
-          <h5>Sets:</h5>
           <ul>
             {activity.Sets.map((set: any, index: number) => (
               <li key={index}>
@@ -46,7 +48,7 @@ const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
                     </>
                   )}
                   {typeof set.Reps === "number" && (
-                    <li>Reps: {set.Reps}</li>
+                    <li>{t("reps")}: {set.Reps}</li>
                   )}
                   {set.Time && (
                     <li>Time: {set.Time.Value} {set.Time.Unit}</li>

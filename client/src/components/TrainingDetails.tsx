@@ -3,20 +3,23 @@ import SingleLimbExerciseDetails from "./SingleLimbExerciseDetails";
 import WeightTrainingDetails from "./WeightTrainingDetails";
 import TempoRunDetails from "./TempoRunDetails";
 import SprintSetDetails from "./SprintSetDetails";
+import { useTranslation } from "react-i18next";
 
 interface TrainingDetailsProps {
   trainingDay: any;
 }
 
 const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
+  const { t } = useTranslation();
+
   return (
     <div style={{ marginTop: "20px", padding: "15px", border: "1px solid #ddd" }}>
       <h2>Details for {trainingDay.Date}</h2>
-      <p><strong>Weather:</strong> {trainingDay.Weather}</p>
-      <p><strong>Location:</strong> {trainingDay.Location}</p>
-      <p><strong>Time:</strong> {trainingDay.Time?.Start} - {trainingDay.Time?.End}</p>
+      <p><strong>{t("weather")}:</strong> {trainingDay.Weather}</p>
+      <p><strong>{t("location")}:</strong> {trainingDay.Location}</p>
+      <p><strong>{t("trainingTime")}:</strong> {trainingDay.Time?.Start} - {trainingDay.Time?.End}</p>
 
-      <h3>Activities</h3>
+      <h3>{t("activities")}:</h3>
       <ul>
         {trainingDay.Activities.map((activity: any, index: number) => (
           <li key={index} style={{ marginBottom: "10px" }}>
