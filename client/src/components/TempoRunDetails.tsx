@@ -11,7 +11,7 @@ const TempoRunDetails: React.FC<TempoRunProps> = ({ activity }) => {
 
   return (
     <div>
-      <h4>{activity.Activity}</h4>
+      <h4>{t(activity.Activity)}</h4>
       <p><strong>{t("time")}:</strong> {activity.Time}{t("seconds")}</p>
       {activity.Splits && (
         <>

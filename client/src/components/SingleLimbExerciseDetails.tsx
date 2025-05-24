@@ -10,11 +10,11 @@ const SingleLimbExerciseDetails: React.FC<SingleLimbProps> = ({ activity }) => {
   const { t } = useTranslation();
   const strengthSets = activity.Sets as StrengthSet[];
   const weight = activity.Weight ? ` ${activity.Weight.Value}${activity.Weight.Unit}` : "";
-  const condition = activity.Condition ? ` (${activity.Condition})` : "";
+  const condition = activity.Condition ? ` (${t(activity.Condition)})` : "";
 
   return (
     <div>
-      <h4>{activity.Activity}{weight}{condition}</h4>
+      <h4>{t(activity.Activity)}{weight}{condition}</h4>
       {strengthSets && (
         <>
           <ul>

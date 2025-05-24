@@ -8,11 +8,12 @@ interface SprintSetProps {
 
 const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
   const { t } = useTranslation();
+  const shoes = activity.Shoes ? ` ${t(activity.Shoes)}` : "";
 
   return (
     <div>
       <h4>{activity.Activity}</h4>
-      <p><strong>{t("shoes")}:</strong> {activity.Shoes}</p>
+      <p><strong>{t("shoes")}:</strong> {shoes}</p>
 
       {activity.Sets && (
         <>

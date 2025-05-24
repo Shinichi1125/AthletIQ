@@ -15,8 +15,8 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
   return (
     <div style={{ marginTop: "20px", padding: "15px", border: "1px solid #ddd" }}>
       <h2><strong>{t("date")}:</strong> {trainingDay.Date}</h2>
-      <p><strong>{t("weather")}:</strong> {trainingDay.Weather}</p>
-      <p><strong>{t("location")}:</strong> {trainingDay.Location}</p>
+      <p><strong>{t("weather")}:</strong> {t(trainingDay.Weather)}</p>
+      <p><strong>{t("location")}:</strong> {t(trainingDay.Location)}</p>
       <p><strong>{t("trainingTime")}:</strong> {trainingDay.Time?.Start} - {trainingDay.Time?.End}</p>
 
       <h3>{t("activities")}:</h3>
@@ -46,7 +46,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
                   return <SprintSetDetails activity={activity} />;
 
                 case "Stretching":
-                  return <h4>{activity.Activity}</h4>;
+                  return <h4>{t(activity.Activity)}</h4>;
 
                 default:
                   return <pre>{JSON.stringify(activity, null, 2)}</pre>;

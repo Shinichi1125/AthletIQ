@@ -24,7 +24,7 @@ const TrainingList: React.FC<TrainingListProps> = ({ trainingDays, onSelect }) =
             }}
             onClick={() => onSelect(day)}
           >
-            <strong>{day.Date}</strong> - {day.Location}
+            <strong>{day.Date}</strong> - {t(day.Location)}
           </li>
         ))}
       </ul>

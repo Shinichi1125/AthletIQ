@@ -14,7 +14,7 @@ const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
 
   return (
     <div>
-      <h4>{activity.Activity}{weight}{distance}{condition}</h4>
+      <h4>{t(activity.Activity)}{weight}{distance}{condition}</h4>
 
       {activity.Reps && (
         <p><strong>{t("reps")}:</strong> {activity.Reps}</p>
