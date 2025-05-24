@@ -14,7 +14,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
 
   return (
     <div style={{ marginTop: "20px", padding: "15px", border: "1px solid #ddd" }}>
-      <h2>Details for {trainingDay.Date}</h2>
+      <h2><strong>{t("date")}:</strong> {trainingDay.Date}</h2>
       <p><strong>{t("weather")}:</strong> {trainingDay.Weather}</p>
       <p><strong>{t("location")}:</strong> {trainingDay.Location}</p>
       <p><strong>{t("trainingTime")}:</strong> {trainingDay.Time?.Start} - {trainingDay.Time?.End}</p>

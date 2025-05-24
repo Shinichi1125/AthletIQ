@@ -24,7 +24,7 @@ const SingleLimbExerciseDetails: React.FC<SingleLimbProps> = ({ activity }) => {
                 <ul>
                   {set.Time && (
                     <li>
-                      Time: {set.Time.Value} {set.Time.Unit}
+                      {t("time")}: {set.Time.Value}{t((set.Time.Unit))}
                     </li>
                   )}
                   {typeof set.Reps === "object" && set.Reps && (
@@ -38,11 +38,6 @@ const SingleLimbExerciseDetails: React.FC<SingleLimbProps> = ({ activity }) => {
                   )}
                   {typeof set.Reps === "number" && (
                     <li>{t("reps")}: {set.Reps}</li>
-                  )}
-                  {set.Weight && (
-                    <li>
-                      Weight: {set.Weight.Value} {set.Weight.Unit}
-                    </li>
                   )}
                 </ul>
               </li>

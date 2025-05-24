@@ -12,13 +12,13 @@ const TempoRunDetails: React.FC<TempoRunProps> = ({ activity }) => {
   return (
     <div>
       <h4>{activity.Activity}</h4>
-      <p><strong>{t("time")}:</strong> {activity.Time}秒</p>
+      <p><strong>{t("time")}:</strong> {activity.Time}{t("seconds")}</p>
       {activity.Splits && (
         <>
           <ul>
             {Object.entries(activity.Splits as TempoRunSplits).map(([key, value]) => (
               <li key={key}>
-                {`${key}: ${value}${t("unitSeconds")}`}
+                {t(key)}: {value}{t("seconds")}
               </li>
             ))}
           </ul>

@@ -8,26 +8,13 @@ interface WeightTrainingProps {
 
 const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
   const { t } = useTranslation();
+  const weight = activity.Weight ? ` ${activity.Weight.Value}${activity.Weight.Unit}` : "";
+  const distance = activity.Distance ? ` ${activity.Distance.Value}${activity.Distance.Unit}` : "";
+  const condition = activity.Condition ? ` (${activity.Condition})` : "";
 
   return (
     <div>
-      <h4>{activity.Activity}</h4>
-
-      {activity.Condition && (
-        <p><strong>Condition:</strong> {activity.Condition}</p>
-      )}
-
-      {activity.Weight && (
-        <p>
-          <strong>{t("weight")}:</strong> {activity.Weight.Value}{activity.Weight.Unit}
-        </p>
-      )}
-
-      {activity.Distance && (
-        <p>
-          <strong>Distance:</strong> {activity.Distance.Value}{activity.Distance.Unit}
-        </p>
-      )}
+      <h4>{activity.Activity}{weight}{distance}{condition}</h4>
 
       {activity.Reps && (
         <p><strong>{t("reps")}:</strong> {activity.Reps}</p>
@@ -51,10 +38,10 @@ const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
                     <li>{t("reps")}: {set.Reps}</li>
                   )}
                   {set.Time && (
-                    <li>Time: {set.Time.Value} {set.Time.Unit}</li>
+                    <li>{t("time")}: {set.Time.Value} {set.Time.Unit}</li>
                   )}
                   {set.Hops && (
-                    <li>Hops: {set.Hops}</li>
+                    <li>{t("hops")}: {set.Hops}</li>
                   )}
                 </ul>
               </li>

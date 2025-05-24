@@ -21,17 +21,17 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
               <li key={index}>
                 <strong>Set {set.Set}</strong>
                 <ul>
-                  <li>{t("time")}: {set.Time}{t("unitSeconds")}</li>
+                  <li>{t("time")}: {set.Time}{t("seconds")}</li>
                   <li>{t("steps")}: {set.Steps}{t("unitSteps")}</li>
                   {set.Splits && (
                     <>
-                      <li><strong>{t("splits")}:</strong></li>
+                      <li>{t("splits")}:</li>
                       <ul>
                         {set.Splits.map((split, i) => {
                           const [key, val] = Object.entries(split)[0];
                           return (
                             <li key={i}>
-                              {t(key)}: {val.Time}{t("unitSeconds")}, {val.Steps}{t("unitSteps")}
+                              {t(key)}: {val.Time}{t("seconds")}, {val.Steps}{t("unitSteps")}
                             </li>
                           );
                         })}
@@ -41,7 +41,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
                           const secondHalf = Object.values(set.Splits[1])[0];
                           const diff = secondHalf.Time - firstHalf.Time;
                           const sign = diff > 0 ? "+" : diff < 0 ? "-" : "";
-                          const formattedDiff = `${sign}${Math.abs(diff).toFixed(1)}${t("unitSeconds")}`;
+                          const formattedDiff = `${sign}${Math.abs(diff).toFixed(1)}${t("seconds")}`;
 
                           let color = "gray";
                           if (diff > 0) color = "red";
