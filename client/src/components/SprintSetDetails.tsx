@@ -13,7 +13,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
   return (
     <div>
       <h4>{activity.Activity}</h4>
-      <p><strong>{t("shoes")}:</strong> {shoes}</p>
+      <p><strong>{t("Shoes")}:</strong> {shoes}</p>
 
       {activity.Sets && (
         <>
@@ -22,17 +22,17 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
               <li key={index}>
                 <strong>Set {set.Set}</strong>
                 <ul>
-                  <li>{t("time")}: {set.Time}{t("seconds")}</li>
-                  <li>{t("steps")}: {set.Steps}{t("unitSteps")}</li>
+                  <li>{t("Time")}: {set.Time}{t("Seconds")}</li>
+                  <li>{t("Steps")}: {set.Steps}{t("Unit_Steps")}</li>
                   {set.Splits && (
                     <>
-                      <li>{t("splits")}:</li>
+                      <li>{t("Splits")}:</li>
                       <ul>
                         {set.Splits.map((split, i) => {
                           const [key, val] = Object.entries(split)[0];
                           return (
                             <li key={i}>
-                              {t(key)}: {val.Time}{t("seconds")}, {val.Steps}{t("unitSteps")}
+                              {t(key)}: {val.Time}{t("Seconds")}, {val.Steps}{t("Unit_Steps")}
                             </li>
                           );
                         })}
@@ -42,7 +42,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
                           const secondHalf = Object.values(set.Splits[1])[0];
                           const diff = secondHalf.Time - firstHalf.Time;
                           const sign = diff > 0 ? "+" : diff < 0 ? "-" : "";
-                          const formattedDiff = `${sign}${Math.abs(diff).toFixed(1)}${t("seconds")}`;
+                          const formattedDiff = `${sign}${Math.abs(diff).toFixed(1)}${t("Seconds")}`;
 
                           let color = "gray";
                           if (diff > 0) color = "red";
@@ -50,7 +50,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
 
                           return (
                             <li>
-                              {t("splitDifference")}:{" "}
+                              {t("Split_Difference")}:{" "}
                               <span style={{ color }}>{formattedDiff}</span>
                             </li>
                           );

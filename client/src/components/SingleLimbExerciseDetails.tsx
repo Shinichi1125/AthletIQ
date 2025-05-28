@@ -24,20 +24,20 @@ const SingleLimbExerciseDetails: React.FC<SingleLimbProps> = ({ activity }) => {
                 <ul>
                   {set.Time && (
                     <li>
-                      {t("time")}: {set.Time.Value}{t((set.Time.Unit))}
+                      {t("Time")}: {set.Time.Value}{t((set.Time.Unit))}
                     </li>
                   )}
                   {typeof set.Reps === "object" && set.Reps && (
                     <>
                       {Object.entries(set.Reps as SingleLimbReps).map(([side, reps]) => (
                         <li key={side}>
-                          {t(side)} {(t("reps"))}: {reps}
+                          {t(side)} {(t("Reps"))}: {reps}
                         </li>
                       ))}
                     </>
                   )}
                   {typeof set.Reps === "number" && (
-                    <li>{t("reps")}: {set.Reps}</li>
+                    <li>{t("Reps")}: {set.Reps}</li>
                   )}
                 </ul>
               </li>

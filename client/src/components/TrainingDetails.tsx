@@ -14,12 +14,12 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
 
   return (
     <div style={{ marginTop: "20px", padding: "15px", border: "1px solid #ddd" }}>
-      <h2><strong>{t("date")}:</strong> {trainingDay.Date}</h2>
-      <p><strong>{t("weather")}:</strong> {t(trainingDay.Weather)}</p>
-      <p><strong>{t("location")}:</strong> {t(trainingDay.Location)}</p>
-      <p><strong>{t("trainingTime")}:</strong> {trainingDay.Time?.Start} - {trainingDay.Time?.End}</p>
+      <h2><strong>{t("Date")}:</strong> {trainingDay.Date}</h2>
+      <p><strong>{t("Weather")}:</strong> {t(trainingDay.Weather)}</p>
+      <p><strong>{t("Location")}:</strong> {t(trainingDay.Location)}</p>
+      <p><strong>{t("Training_Time")}:</strong> {trainingDay.Time?.Start} - {trainingDay.Time?.End}</p>
 
-      <h3>{t("activities")}:</h3>
+      <h3>{t("Activities")}:</h3>
       <ul>
         {trainingDay.Activities.map((activity: any, index: number) => (
           <li key={index} style={{ marginBottom: "10px" }}>
@@ -34,7 +34,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
                 case "Power_Clean":
                 case "Clean_and_Jerk":
                 case "Hang_Clean":
-                case "Muscule_Ups":
+                case "Muscle_Ups":
                 case "Pogo_Skips":
                 case "Scissors_Hop_Skips":
                   return <WeightTrainingDetails activity={activity} />;

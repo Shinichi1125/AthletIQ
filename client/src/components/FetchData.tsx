@@ -26,12 +26,12 @@ const FetchData: React.FC = () => {
     fetchData();
   }, []);
 
-  if (loading) return <p>{t("loading")}</p>;
+  if (loading) return <p>{t("Loading")}</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
-      <h1>{t("title")}</h1>
+      <h1>{t("Title")}</h1>
       <TrainingList trainingDays={data} onSelect={setSelectedDay} />
       {selectedDay && <TrainingDetails trainingDay={selectedDay} />}
     </div>

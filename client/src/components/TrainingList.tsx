@@ -12,7 +12,7 @@ const TrainingList: React.FC<TrainingListProps> = ({ trainingDays, onSelect }) =
 
   return (
     <div>
-      <h2>{t("trainingTimelineHeader")}</h2>
+      <h2>{t("Training_Timeline_Header")}</h2>
       <ul style={{ listStyleType: "none", padding: 0 }}>
         {trainingDays.map((day, index) => (
           <li
