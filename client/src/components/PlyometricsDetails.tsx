@@ -2,18 +2,17 @@ import React from "react";
 import { Activity } from "../types";
 import { useTranslation } from "react-i18next";
 
-interface WeightTrainingProps {
+interface PlyometricsProps {
   activity: Activity;
 }
 
-const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
+const PlyometricsDetails: React.FC<PlyometricsProps> = ({ activity }) => {
   const { t } = useTranslation();
-  const weight = activity.Weight ? ` ${activity.Weight.Value}${activity.Weight.Unit}` : "";
-  const condition = activity.Condition ? ` (${activity.Condition})` : "";
+  const distance = activity.Distance ? ` ${activity.Distance.Value}${activity.Distance.Unit}` : "";
 
   return (
     <div>
-      <h4>{t(activity.Activity)}{weight}{condition}</h4>
+      <h4>{t(activity.Activity)}{distance}</h4>
 
       {activity.Reps && (
         <p><strong>{t("Reps")}:</strong> {activity.Reps}</p>
@@ -29,6 +28,9 @@ const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
                   {typeof set.Reps === "number" && (
                     <li>{t("Reps")}: {set.Reps}</li>
                   )}
+                  {set.Hops && (
+                    <li>{t("Hops")}: {set.Hops}</li>
+                  )}
                 </ul>
               </li>
             ))}
@@ -39,4 +41,4 @@ const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
   );
 };
 
-export default WeightTrainingDetails;
+export default PlyometricsDetails;

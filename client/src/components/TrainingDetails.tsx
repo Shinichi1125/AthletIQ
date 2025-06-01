@@ -4,6 +4,8 @@ import WeightTrainingDetails from "./WeightTrainingDetails";
 import TempoRunDetails from "./TempoRunDetails";
 import SprintSetDetails from "./SprintSetDetails";
 import { useTranslation } from "react-i18next";
+import CalisthenicsDetails from "./CalisthenicsDetails";
+import PlyometricsDetails from "./PlyometricsDetails";
 
 interface TrainingDetailsProps {
   trainingDay: any;
@@ -26,6 +28,9 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
             {(() => {
               switch (activity.Tag) {
                 case "Plank":
+                case "Muscle_Ups":
+                  return <CalisthenicsDetails activity={activity} />;
+
                 case "One_Hand_Pushups":
                 case "Single_Leg_Squats":
                 case "One_Hand_Pullups":
@@ -34,10 +39,11 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
                 case "Power_Clean":
                 case "Clean_and_Jerk":
                 case "Hang_Clean":
-                case "Muscle_Ups":
+                  return <WeightTrainingDetails activity={activity} />;
+
                 case "Pogo_Skips":
                 case "Scissors_Hop_Skips":
-                  return <WeightTrainingDetails activity={activity} />;
+                  return <PlyometricsDetails activity={activity} />;
 
                 case "400m_Tempo_Run":
                   return <TempoRunDetails activity={activity} />;

@@ -2,18 +2,16 @@ import React from "react";
 import { Activity } from "../types";
 import { useTranslation } from "react-i18next";
 
-interface WeightTrainingProps {
+interface CalisthenicsProps {
   activity: Activity;
 }
 
-const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
+const CalisthenicsDetails: React.FC<CalisthenicsProps> = ({ activity }) => {
   const { t } = useTranslation();
-  const weight = activity.Weight ? ` ${activity.Weight.Value}${activity.Weight.Unit}` : "";
-  const condition = activity.Condition ? ` (${activity.Condition})` : "";
 
   return (
     <div>
-      <h4>{t(activity.Activity)}{weight}{condition}</h4>
+      <h4>{t(activity.Activity)}</h4>
 
       {activity.Reps && (
         <p><strong>{t("Reps")}:</strong> {activity.Reps}</p>
@@ -29,6 +27,9 @@ const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
                   {typeof set.Reps === "number" && (
                     <li>{t("Reps")}: {set.Reps}</li>
                   )}
+                  {set.Time && (
+                    <li>{t("Time")}: {set.Time.Value} {set.Time.Unit}</li>
+                  )}
                 </ul>
               </li>
             ))}
@@ -39,4 +40,4 @@ const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
   );
 };
 
-export default WeightTrainingDetails;
+export default CalisthenicsDetails;

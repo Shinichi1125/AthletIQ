@@ -22,11 +22,6 @@ const SingleLimbExerciseDetails: React.FC<SingleLimbProps> = ({ activity }) => {
               <li key={index}>
                 <strong>Set: {set.Set}</strong>
                 <ul>
-                  {set.Time && (
-                    <li>
-                      {t("Time")}: {set.Time.Value}{t((set.Time.Unit))}
-                    </li>
-                  )}
                   {typeof set.Reps === "object" && set.Reps && (
                     <>
                       {Object.entries(set.Reps as SingleLimbReps).map(([side, reps]) => (
