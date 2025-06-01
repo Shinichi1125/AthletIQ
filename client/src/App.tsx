@@ -4,9 +4,13 @@ import { useTranslation } from "react-i18next";
 function App() {
   const { i18n } = useTranslation();
 
-  const toggleLanguage = () => {
-    const nextLang = i18n.language === "en" ? "ja" : "en";
-    i18n.changeLanguage(nextLang);
+  const languages = [
+    { code: "en", label: "English" },
+    { code: "ja", label: "日本語" },
+  ];
+
+  const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    i18n.changeLanguage(event.target.value);
   };
 
   return (
@@ -20,10 +24,41 @@ function App() {
         width: '100%',
       }}
     >
-      <button onClick={toggleLanguage} style={{ margin: "10px" }}>
-        🌐 Switch to {i18n.language === "en" ? "日本語" : "English"}
-      </button>
-      <FetchData />
+      <nav
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "10px 20px",
+          backgroundColor: "rgba(255, 255, 255, 0.7)",
+          backdropFilter: "blur(4px)",
+          borderBottom: "1px solid #ccc",
+        }}
+      >
+        <div style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+          AthletIQ
+        </div>
+        <select
+          id="language-selector"
+          value={i18n.language}
+          onChange={handleLanguageChange}
+          style={{
+            padding: "5px",
+            borderRadius: "4px",
+            fontSize: "1rem",
+          }}
+        >
+          {languages.map((lang) => (
+            <option key={lang.code} value={lang.code}>
+              🌐 {lang.label}
+            </option>
+          ))}
+        </select>
+      </nav>
+
+      <main style={{ padding: "20px" }}>
+        <FetchData />
+      </main>
     </div>
   );
 }
