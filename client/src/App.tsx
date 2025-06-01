@@ -1,3 +1,4 @@
+import "./App.css";
 import FetchData from "./components/FetchData";
 import { useTranslation } from "react-i18next";
 
