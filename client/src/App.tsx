@@ -10,7 +10,16 @@ function App() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        backgroundImage: `url(${process.env.PUBLIC_URL}/AthletIQ_background_image-1.png)`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+        width: '100%',
+      }}
+    >
       <button onClick={toggleLanguage} style={{ margin: "10px" }}>
         🌐 Switch to {i18n.language === "en" ? "日本語" : "English"}
       </button>
