@@ -32,7 +32,14 @@ const FetchData: React.FC = () => {
   return (
     <div>
       <h1>{t("Title")}</h1>
-      <TrainingList trainingDays={data} onSelect={setSelectedDay} />
+      <TrainingList
+        trainingDays={data}
+        onSelect={(day) =>
+          setSelectedDay(
+            selectedDay === day ? null : day
+          )
+        }
+      />
       {selectedDay && <TrainingDetails trainingDay={selectedDay} />}
     </div>
   );
