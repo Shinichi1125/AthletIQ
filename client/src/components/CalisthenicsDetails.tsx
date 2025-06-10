@@ -28,7 +28,7 @@ const CalisthenicsDetails: React.FC<CalisthenicsProps> = ({ activity }) => {
                     <li>{t("Reps")}: {set.Reps}</li>
                   )}
                   {set.Time && (
-                    <li>{t("Time")}: {set.Time.Value} {set.Time.Unit}</li>
+                    <li>{t("Time")}: {set.Time.Value}{t(set.Time.Unit)}</li>
                   )}
                 </ul>
               </li>
