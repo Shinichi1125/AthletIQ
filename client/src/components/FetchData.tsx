@@ -29,6 +29,10 @@ const FetchData: React.FC = () => {
   if (loading) return <p>{t("Loading")}</p>;
   if (error) return <p>Error: {error}</p>;
 
+  const hideDetails = () => {
+    setSelectedDay(null);
+  }
+
   return (
     <div>
       <h1>{t("Title")}</h1>
@@ -40,6 +44,7 @@ const FetchData: React.FC = () => {
           )
         }
       />
+      {selectedDay && <button onClick={hideDetails}>{t("hideDetails")}</button>}
       {selectedDay && <TrainingDetails trainingDay={selectedDay} />}
     </div>
   );
