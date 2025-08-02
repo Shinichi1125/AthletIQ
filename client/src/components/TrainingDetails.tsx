@@ -6,6 +6,7 @@ import SprintSetDetails from "./SprintSetDetails";
 import { useTranslation } from "react-i18next";
 import CalisthenicsDetails from "./CalisthenicsDetails";
 import PlyometricsDetails from "./PlyometricsDetails";
+import { formatDate } from "../utils/helper";
 
 interface TrainingDetailsProps {
   trainingDay: any;
@@ -16,7 +17,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
 
   return (
     <div style={{ marginTop: "20px", padding: "15px", border: "1px solid #ddd" }}>
-      <h2><strong>{t("Date")}:</strong> {trainingDay.Date}</h2>
+      <h2><strong>{t("Date")}:</strong> {formatDate(trainingDay.Date)}</h2>
       <p><strong>{t("Weather")}:</strong> {t(trainingDay.Weather)}</p>
       <p><strong>{t("Location")}:</strong> {t(trainingDay.Location)}</p>
       <p><strong>{t("Training_Time")}:</strong> {trainingDay.Time?.Start} - {trainingDay.Time?.End}</p>

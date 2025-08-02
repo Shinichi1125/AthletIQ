@@ -1,6 +1,6 @@
 import React from "react";
-import "../i18n";
 import { useTranslation } from "react-i18next";
+import { formatDate } from "../utils/helper";
 
 interface TrainingListProps {
   trainingDays: any[];
@@ -24,7 +24,7 @@ const TrainingList: React.FC<TrainingListProps> = ({ trainingDays, onSelect }) =
             }}
             onClick={() => onSelect(day)}
           >
-            <strong>{day.Date}</strong> - {t(day.Location)}
+            <strong>{formatDate(day.Date)}</strong> - {t(day.Location)}
           </li>
         ))}
       </ul>
