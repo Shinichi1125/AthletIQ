@@ -13,7 +13,8 @@ interface TrainingDetailsProps {
 }
 
 const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isJapanese = i18n.language === "ja";
 
   return (
     <div style={{ marginTop: "20px", padding: "15px", border: "1px solid #ddd" }}>
@@ -64,9 +65,9 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
         ))}
       </ul>
 
-      {trainingDay.Notes && (
+      {trainingDay.Notes && isJapanese && (
         <>
-          <h3>Notes</h3>
+          <h3>{t("Notes")}:</h3>
           {trainingDay.Notes.map((noteObj: any, index: number) => {
             const noteData = noteObj.note;
             if (Array.isArray(noteData)) {

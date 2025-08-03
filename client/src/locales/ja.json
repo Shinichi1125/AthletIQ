@@ -43,5 +43,6 @@
   "Right_Arm": "右手",
   "Left_Leg": "左脚",
   "Right_Leg": "右脚",
-  "Hops": "ホップ数"
+  "Hops": "ホップ数",
+  "Notes": "備考"
 }
