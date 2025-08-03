@@ -16,10 +16,13 @@ export const formatDate = (isoDateString: string): string => {
 };
 
 export const isActivitySprintSets = (activity: any): boolean => {
-  if(activity.Activity.includes("(100m + 300m jog + 400m walk)")) return true;
-  if(activity.Activity.includes("(200m + 600m jog + 400m walk)")) return true;
-  if(activity.Activity.includes("(300m + 900m jog + 400m walk)")) return true;
-  if(activity.Activity.includes("(400m + 1200m jog + 400m walk)")) return true;
-  if(activity.Activity.includes("(500m + 1500m jog + 400m walk)")) return true;
+  if(activity.Activity.includes("(100m run + 300m jog + 400m walk)")) return true;
+  if(activity.Activity.includes("(200m run + 600m jog + 400m walk)")) return true;
+  if(activity.Activity.includes("(300m run + 900m jog + 400m walk)")) return true;
+  if(activity.Activity.includes("(400m run + 1200m jog + 400m walk)")) return true;
+  if(activity.Activity.includes("(500m run + 1500m jog + 400m walk)")) return true;
+  if(activity.Activity.includes("50m_Dash")) return true;
+  if(activity.Activity.includes("Time_Trial")) return true;
+  if(activity.Activity.includes("High_Knees_And")) return true;
   return false;
 }

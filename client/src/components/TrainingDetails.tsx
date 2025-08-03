@@ -42,6 +42,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
                 case "Power_Clean":
                 case "Power_Clean_and_Jerk":
                 case "Hang_Power_Clean":
+                case "Hang_Power_Clean_and_Jerk":
                   return <WeightTrainingDetails activity={activity} />;
 
                 case "Pogo_Skips":
@@ -49,6 +50,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
                   return <PlyometricsDetails activity={activity} />;
 
                 case "400m_Tempo_Run":
+                case "500m_Tempo_Run":
                   return <TempoRunDetails activity={activity} />;
                 
                 case "Sprint_Sets":
