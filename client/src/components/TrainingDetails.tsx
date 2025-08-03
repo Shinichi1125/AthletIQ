@@ -6,7 +6,7 @@ import SprintSetDetails from "./SprintSetDetails";
 import { useTranslation } from "react-i18next";
 import CalisthenicsDetails from "./CalisthenicsDetails";
 import PlyometricsDetails from "./PlyometricsDetails";
-import { formatDate } from "../utils/helper";
+import { formatDate, isActivitySprintSets } from "../utils/helper";
 
 interface TrainingDetailsProps {
   trainingDay: any;
@@ -27,7 +27,8 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
         {trainingDay.Activities.map((activity: any, index: number) => (
           <li key={index} style={{ marginBottom: "10px" }}>
             {(() => {
-              switch (activity.Tag) {
+              const activityType = isActivitySprintSets(activity) ? "Sprint_Sets" : activity.Activity;
+              switch (activityType) {
                 case "Plank":
                 case "Muscle_Ups":
                   return <CalisthenicsDetails activity={activity} />;
