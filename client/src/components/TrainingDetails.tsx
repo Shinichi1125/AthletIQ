@@ -40,8 +40,8 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
                   return <SingleLimbExerciseDetails activity={activity} />;
 
                 case "Power_Clean":
-                case "Clean_and_Jerk":
-                case "Hang_Clean":
+                case "Power_Clean_and_Jerk":
+                case "Power_Hang_Clean":
                   return <WeightTrainingDetails activity={activity} />;
 
                 case "Pogo_Skips":
