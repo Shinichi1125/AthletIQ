@@ -5,47 +5,50 @@ import { fetchTrainingData } from "../utils/api";
 import TrainingList from "./TrainingList";
 import TrainingDetails from "./TrainingDetails";
 
-const FetchData: React.FC = () => {
+interface Props {
+  idToken?: string | null;
+}
+
+const FetchData: React.FC<Props> = ({ idToken }) => {
   const { t } = useTranslation();
   const [data, setData] = useState<any[]>([]);
   const [selectedDay, setSelectedDay] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    if (!idToken) return;
+    setLoading(true);
+    const run = async () => {
       try {
-        const trainingData = await fetchTrainingData();
+        const trainingData = await fetchTrainingData(idToken);
         setData(trainingData);
       } catch (err: any) {
-        setError(err.message);
+        setError(err.message ?? String(err));
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
-  }, []);
+    run();
+  }, [idToken]);
 
+  if (!idToken) return <p>{t("Please_Sign_In")}</p>;
   if (loading) return <p>{t("Loading")}</p>;
   if (error) return <p>Error: {error}</p>;
-
-  const hideDetails = () => {
-    setSelectedDay(null);
-  }
 
   return (
     <div>
       <h1>{t("Title")}</h1>
       <TrainingList
         trainingDays={data}
-        onSelect={(day) =>
-          setSelectedDay(
-            selectedDay === day ? null : day
-          )
-        }
+        onSelect={(day) => setSelectedDay(selectedDay === day ? null : day)}
       />
-      {selectedDay && <button onClick={hideDetails}>{t("hideDetails")}</button>}
-      {selectedDay && <TrainingDetails trainingDay={selectedDay} />}
+      {selectedDay && (
+        <>
+          <button onClick={() => setSelectedDay(null)}>{t("hideDetails")}</button>
+          <TrainingDetails trainingDay={selectedDay} />
+        </>
+      )}
     </div>
   );
 };
