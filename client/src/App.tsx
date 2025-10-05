@@ -67,7 +67,9 @@ function App() {
           </div>
         )}
 
-        <FetchData idToken={idToken} />
+        {signedIn && (
+          <FetchData idToken={idToken} />
+        )}
       </main>
     </div>
   );
