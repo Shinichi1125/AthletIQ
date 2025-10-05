@@ -15,6 +15,11 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
   const [selectedDay, setSelectedDay] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = data.slice(indexOfFirstItem, indexOfLastItem);
 
   useEffect(() => {
     if (!idToken) return;
@@ -40,9 +45,32 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
     <div>
       <h1>{t("Title")}</h1>
       <TrainingList
-        trainingDays={data}
+        trainingDays={currentData}
         onSelect={(day) => setSelectedDay(selectedDay === day ? null : day)}
       />
+
+      <div style={{ marginTop: "20px" }}>
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+
+        <span style={{ margin: "0 10px" }}>Page {currentPage}</span>
+
+        <button
+          onClick={() =>
+            setCurrentPage((prev) =>
+              prev < Math.ceil(data.length / itemsPerPage) ? prev + 1 : prev
+            )
+          }
+          disabled={currentPage >= Math.ceil(data.length / itemsPerPage)}
+        >
+          Next
+        </button>
+      </div>
+
       {selectedDay && (
         <>
           <button onClick={() => setSelectedDay(null)}>{t("hideDetails")}</button>
