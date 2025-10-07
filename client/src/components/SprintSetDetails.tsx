@@ -12,7 +12,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
 
   return (
     <div>
-      <h4>{activity.Activity}</h4>
+      <h4>{t(activity.Activity)}</h4>
       <p><strong>{t("Shoes")}:</strong> {shoes}</p>
 
       {activity.Sets && (

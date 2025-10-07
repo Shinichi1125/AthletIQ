@@ -57,6 +57,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
                   return <SprintSetDetails activity={activity} />;
 
                 case "Stretching":
+                case "Sprint_Drills":
                   return <h4>{t(activity.Activity)}</h4>;
 
                 default:
