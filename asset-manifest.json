@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/AthletIQ/static/css/main.997ce978.css",
-    "main.js": "/AthletIQ/static/js/main.2de8ef1a.js",
+    "main.js": "/AthletIQ/static/js/main.ccce7461.js",
     "static/js/453.419a5d54.chunk.js": "/AthletIQ/static/js/453.419a5d54.chunk.js",
     "index.html": "/AthletIQ/index.html",
     "main.997ce978.css.map": "/AthletIQ/static/css/main.997ce978.css.map",
-    "main.2de8ef1a.js.map": "/AthletIQ/static/js/main.2de8ef1a.js.map",
+    "main.ccce7461.js.map": "/AthletIQ/static/js/main.ccce7461.js.map",
     "453.419a5d54.chunk.js.map": "/AthletIQ/static/js/453.419a5d54.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.997ce978.css",
-    "static/js/main.2de8ef1a.js"
+    "static/js/main.ccce7461.js"
   ]
 }
