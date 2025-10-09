@@ -13,7 +13,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
   return (
     <div>
       <h4>{t(activity.Activity)}</h4>
-      <p><strong>{t("Shoes")}:</strong> {shoes}</p>
+      {activity.Shoes && <p><strong>{t("Shoes")}:</strong> {shoes}</p>}
 
       {activity.Sets && (
         <>
@@ -23,16 +23,17 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
                 <strong>Set {set.Set}</strong>
                 <ul>
                   <li>{t("Time")}: {set.Time}{t("Seconds")}</li>
-                  <li>{t("Steps")}: {set.Steps}{t("Unit_Steps")}</li>
+                  {set.Steps && <li>{t("Steps")}: {set.Steps}{t("Unit_Steps")}</li>}
                   {set.Splits && (
                     <>
                       <li>{t("Splits")}:</li>
                       <ul>
                         {set.Splits.map((split, i) => {
                           const [key, val] = Object.entries(split)[0];
+                          const steps = val.Steps ? `, ${val.Steps}${t("Unit_Steps")}` : "";
                           return (
                             <li key={i}>
-                              {t(key)}: {val.Time}{t("Seconds")}, {val.Steps}{t("Unit_Steps")}
+                              {t(key)}: {val.Time}{t("Seconds")}{steps}
                             </li>
                           );
                         })}
