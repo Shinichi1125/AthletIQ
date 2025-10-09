@@ -51,13 +51,20 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
 
       <div style={{ marginTop: "20px" }}>
         <button
+            onClick={() => setCurrentPage((1))}
+            disabled={currentPage === 1}
+            style={{ margin: "0 10px" }}
+          >
+          |←
+        </button>
+        <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
         >
-          Previous
+          ←
         </button>
 
-        <span style={{ margin: "0 10px" }}>Page {currentPage}</span>
+        <span style={{ margin: "0 10px" }}>Page {currentPage} / {(data.length / itemsPerPage)}</span>
 
         <button
           onClick={() =>
@@ -67,13 +74,20 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
           }
           disabled={currentPage >= Math.ceil(data.length / itemsPerPage)}
         >
-          Next
+          →
+        </button>
+        <button
+            onClick={() => setCurrentPage((data.length / itemsPerPage))}
+            disabled={currentPage === (data.length / itemsPerPage)}
+            style={{ margin: "0 10px" }}
+          >
+          →|
         </button>
       </div>
 
       {selectedDay && (
         <>
-          <button onClick={() => setSelectedDay(null)}>{t("hideDetails")}</button>
+          <button onClick={() => setSelectedDay(null)} style={{ marginTop: "20px" }}>{t("hideDetails")}</button>
           <TrainingDetails trainingDay={selectedDay} />
         </>
       )}
