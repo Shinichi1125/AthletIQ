@@ -32,6 +32,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
               switch (activityType) {
                 case "Plank":
                 case "Muscle_Ups":
+                case "Archer_Pullups":
                   return <CalisthenicsDetails activity={activity} />;
 
                 case "One_Hand_Pushups":
