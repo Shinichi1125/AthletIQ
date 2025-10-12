@@ -17,6 +17,7 @@ export const activityOptions = [
   "Sprint_Drills",
   "High_Knees_And_50m_Sprint",
   "High_Knees_And_100m_Sprint",
+  "100m_Time_Trial",
   "200m_Time_Trial",
   "300m_Time_Trial",
   "400m_Time_Trial",
