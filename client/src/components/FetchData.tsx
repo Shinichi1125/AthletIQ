@@ -5,6 +5,8 @@ import { fetchTrainingData } from "../utils/api";
 import TrainingList from "./TrainingList";
 import TrainingDetails from "./TrainingDetails";
 import Pagination from "./Pagination";
+import { Activity } from "../types";
+import FilterBar from "./FilterBar";
 
 interface Props {
   idToken?: string | null;
@@ -13,15 +15,18 @@ interface Props {
 const FetchData: React.FC<Props> = ({ idToken }) => {
   const { t } = useTranslation();
   const [data, setData] = useState<any[]>([]);
+  const [filteredData, setFilteredData] = useState<any[]>([]);
   const [selectedDay, setSelectedDay] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [activityNameInput, setActivityNameInput] = useState<string>("");
+
   const itemsPerPage = 10;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentData = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentData = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
   useEffect(() => {
     if (!idToken) return;
@@ -30,6 +35,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
       try {
         const trainingData = await fetchTrainingData(idToken);
         setData(trainingData);
+        setFilteredData(trainingData);
       } catch (err: any) {
         setError(err.message ?? String(err));
       } finally {
@@ -39,6 +45,16 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
     run();
   }, [idToken]);
 
+  const handleFilter = () => {
+    const filtered = data.filter((trainingDay) =>
+      trainingDay.Activities.some(
+        (activity: Activity) => activity.Activity === activityNameInput
+      )
+    );
+    setFilteredData(filtered);
+    setCurrentPage(1);
+  };
+
   if (!idToken) return <p>{t("Please_Sign_In")}</p>;
   if (loading) return <p>{t("Loading")}</p>;
   if (error) return <p>Error: {error}</p>;
@@ -46,6 +62,18 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
   return (
     <div>
       <h1>{t("Title")}</h1>
+
+      <FilterBar
+        activityName={activityNameInput}
+        onActivityNameChange={setActivityNameInput}
+        onFilter={handleFilter}
+        onClear={() => {
+          setActivityNameInput("");
+          setFilteredData(data);
+          setCurrentPage(1);
+        }}
+      />
+
       <TrainingList
         trainingDays={currentData}
         onSelect={(day) => setSelectedDay(selectedDay === day ? null : day)}
@@ -53,7 +81,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
 
       <Pagination
         currentPage={currentPage}
-        totalItems={data.length}
+        totalItems={filteredData.length}
         itemsPerPage={itemsPerPage}
         onPageChange={setCurrentPage}
       />
