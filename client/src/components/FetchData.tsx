@@ -52,6 +52,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
       )
     );
     setFilteredData(filtered);
+    setSelectedDay(null);
     setCurrentPage(1);
   };
 
@@ -70,6 +71,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
         onClear={() => {
           setActivityNameInput("");
           setFilteredData(data);
+          setSelectedDay(null);
           setCurrentPage(1);
         }}
       />
