@@ -1,7 +1,7 @@
 import React from "react";
 
 interface NavBarProps {
-  i18n: any; // replace 'any' with your i18n type if available
+  i18n: any;
   languages: { code: string; label: string }[];
   handleLanguageChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }

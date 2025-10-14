@@ -10,6 +10,14 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
   const { t } = useTranslation();
   const shoes = activity.Shoes ? ` ${t(activity.Shoes)}` : "";
 
+  const isShortSprint = (activity: Activity) => {
+    if(activity.Activity.includes("100m")) return true;
+    if(activity.Activity.includes("50m")) return true;
+    return false;
+  }
+
+  const decimalPlace: number = isShortSprint(activity) ? 2 : 1;
+
   return (
     <div>
       <h4>{t(activity.Activity)}</h4>
@@ -22,7 +30,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
               <li key={index}>
                 <strong>Set {set.Set}</strong>
                 <ul>
-                  <li>{t("Time")}: {set.Time.toFixed(1)}{t("Seconds")}</li>
+                  <li>{t("Time")}: {set.Time.toFixed(decimalPlace)}{t("Seconds")}</li>
                   {set.Steps && <li>{t("Steps")}: {set.Steps}{t("Unit_Steps")}</li>}
                   {set.Splits && (
                     <>
@@ -33,7 +41,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
                           const steps = val.Steps ? `, ${val.Steps}${t("Unit_Steps")}` : "";
                           return (
                             <li key={i}>
-                              {t(key)}: {val.Time.toFixed(1)}{t("Seconds")}{steps}
+                              {t(key)}: {val.Time.toFixed(decimalPlace)}{t("Seconds")}{steps}
                             </li>
                           );
                         })}
@@ -43,7 +51,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
                           const secondHalf = Object.values(set.Splits[1])[0];
                           const diff = secondHalf.Time - firstHalf.Time;
                           const sign = diff > 0 ? "+" : diff < 0 ? "-" : "";
-                          const formattedDiff = `${sign}${Math.abs(diff).toFixed(1)}${t("Seconds")}`;
+                          const formattedDiff = `${sign}${Math.abs(diff).toFixed(decimalPlace)}${t("Seconds")}`;
 
                           let color = "gray";
                           if (diff > 0) color = "red";
