@@ -19,7 +19,26 @@ const NavBar: React.FC<NavBarProps> = ({ i18n, languages, handleLanguageChange }
         borderBottom: "1px solid #ccc",
       }}
     >
-      <div style={{ fontWeight: "bold", fontSize: "1.2rem" }}>AthletIQ</div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          fontWeight: "bold",
+          fontSize: "1.2rem",
+        }}
+      >
+        <img
+          src={`${process.env.PUBLIC_URL}/favicon-96x96.png`}
+          alt="AthletIQ Logo"
+          style={{
+            width: "32px",
+            height: "32px",
+            marginRight: "8px",
+            display: "block",
+          }}
+        />
+        <span style={{ lineHeight: "1", display: "inline-block" }}>AthletIQ</span>
+      </div>
       <select
         id="language-selector"
         value={i18n.language}
