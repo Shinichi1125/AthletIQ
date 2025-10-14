@@ -22,7 +22,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
               <li key={index}>
                 <strong>Set {set.Set}</strong>
                 <ul>
-                  <li>{t("Time")}: {set.Time}{t("Seconds")}</li>
+                  <li>{t("Time")}: {set.Time.toFixed(1)}{t("Seconds")}</li>
                   {set.Steps && <li>{t("Steps")}: {set.Steps}{t("Unit_Steps")}</li>}
                   {set.Splits && (
                     <>
@@ -33,7 +33,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
                           const steps = val.Steps ? `, ${val.Steps}${t("Unit_Steps")}` : "";
                           return (
                             <li key={i}>
-                              {t(key)}: {val.Time}{t("Seconds")}{steps}
+                              {t(key)}: {val.Time.toFixed(1)}{t("Seconds")}{steps}
                             </li>
                           );
                         })}
