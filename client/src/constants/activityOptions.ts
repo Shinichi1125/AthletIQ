@@ -29,3 +29,9 @@ export const activityOptions = [
   "500m_Time_Trial",
   "50m_Dash",
 ];
+
+export const activityConditions = [
+  "Rope_Assisted",
+  "With_Support_Hand",
+  "Negative"
+];

@@ -22,6 +22,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [activityNameInput, setActivityNameInput] = useState<string>("");
+  const [activityConditionInput, setActivityConditionInput] = useState("");
 
   const itemsPerPage = 10;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -47,9 +48,13 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
 
   const handleFilter = () => {
     const filtered = data.filter((trainingDay) =>
-      trainingDay.Activities.some(
-        (activity: Activity) => activity.Activity === activityNameInput
-      )
+      trainingDay.Activities.some((activity: Activity) => {
+        if (activityNameInput !== activity.Activity) return false;
+        if (activity.Activity === "One_Hand_Pullups" && activityConditionInput) {
+          return activity.Condition === activityConditionInput;
+        }
+        return true;
+      })
     );
     setFilteredData(filtered);
     setSelectedDay(null);
@@ -66,14 +71,18 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
 
       <FilterBar
         activityName={activityNameInput}
+        activityCondition={activityConditionInput}
         onActivityNameChange={setActivityNameInput}
+        onActivityConditionChange={setActivityConditionInput}
         onFilter={handleFilter}
         onClear={() => {
           setActivityNameInput("");
+          setActivityConditionInput("");
           setFilteredData(data);
-          setSelectedDay(null);
           setCurrentPage(1);
+          setSelectedDay(null);
         }}
+        t={t}
       />
 
       <TrainingList
