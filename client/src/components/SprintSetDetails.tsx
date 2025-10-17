@@ -9,6 +9,7 @@ interface SprintSetProps {
 const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
   const { t } = useTranslation();
   const shoes = activity.Shoes ? ` ${t(activity.Shoes)}` : "";
+  const lightGreenRgbValue = "#72E972";
 
   const isShortSprint = (activity: Activity) => {
     if(activity.Activity.includes("100m")) return true;
@@ -53,9 +54,9 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
                           const sign = diff > 0 ? "+" : diff < 0 ? "-" : "";
                           const formattedDiff = `${sign}${Math.abs(diff).toFixed(decimalPlace)}${t("Seconds")}`;
 
-                          let color = "gray";
+                          let color = "yellow";
                           if (diff > 0) color = "red";
-                          else if (diff < 0) color = "green";
+                          else if (diff < 0) color = lightGreenRgbValue;
 
                           return (
                             <li>
