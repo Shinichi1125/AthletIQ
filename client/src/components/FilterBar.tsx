@@ -20,6 +20,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
   onClear,
   t,
 }) => {
+  const isFilterDisabled = !activityName || (activityName === "One_Hand_Pullups" && !activityCondition);
+
   return (
     <div style={{ marginBottom: "10px" }}>
       <label>
@@ -56,7 +58,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
         </label>
       )}
 
-      <button onClick={onFilter} style={{ marginLeft: "10px" }}>
+      <button onClick={onFilter} style={{ marginLeft: "10px" }} disabled={isFilterDisabled}>
         {t("Filter")}
       </button>
 
