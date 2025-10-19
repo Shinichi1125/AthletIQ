@@ -66,12 +66,18 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
           if (activity.Condition !== activityConditionInput) return false;
         }
 
-        if ((isActivityShortSprint(activity) || isActivityTempoRun(activity)) && activity.Sets) {
+        if ((isActivityShortSprint(activity) && activity.Sets)) {
           return (activity.Sets as SprintSet[]).some((set) => {
             const t = set.Time;
             return (!isNaN(minTime) ? t >= minTime : true) &&
                    (!isNaN(maxTime) ? t <= maxTime : true);
           });
+        }
+
+        if (isActivityTempoRun(activity)) {
+          const t = activity.Time ?? 0;
+          return (!isNaN(minTime) ? t >= minTime : true) &&
+                 (!isNaN(maxTime) ? t <= maxTime : true);
         }
 
         if (isActivitySprintSets(activity) && !isActivityShortSprint(activity) && activity.Sets) {
