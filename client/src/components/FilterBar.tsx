@@ -1,16 +1,20 @@
 import React from "react";
 import { activityOptions, activityConditions } from "../constants/activityOptions";
-import { isActivitySprintSets, isActivityShortSprint } from "../utils/helper";
+import { isActivitySprintSets, isActivityShortSprint, isActivityTempoRun } from "../utils/helper";
 
 interface FilterBarProps {
   activityName: string;
   activityCondition: string;
   splitDiffMin: string;
   splitDiffMax: string;
+  timeMin: string;
+  timeMax: string;
   onActivityNameChange: (value: string) => void;
   onActivityConditionChange: (value: string) => void;
   onSplitDiffMinChange: (value: string) => void;
   onSplitDiffMaxChange: (value: string) => void;
+  onTimeMinChange: (value: string) => void;
+  onTimeMaxChange: (value: string) => void;
   onFilter: () => void;
   onClear: () => void;
   t: (key: string) => string;
@@ -21,15 +25,20 @@ const FilterBar: React.FC<FilterBarProps> = ({
   activityCondition,
   splitDiffMin,
   splitDiffMax,
+  timeMin,
+  timeMax,
   onActivityNameChange,
   onActivityConditionChange,
   onSplitDiffMinChange,
   onSplitDiffMaxChange,
+  onTimeMinChange,
+  onTimeMaxChange,
   onFilter,
   onClear,
   t,
 }) => {
   const showConditionDropdown = activityName === "One_Hand_Pullups";
+  const showTimeInputs = isActivitySprintSets({ Activity: activityName }) || isActivityTempoRun({ Activity: activityName });
   const showSplitDiffInputs = isActivitySprintSets({ Activity: activityName }) && !isActivityShortSprint({ Activity: activityName });
 
   const isFilterDisabled =
@@ -71,6 +80,27 @@ const FilterBar: React.FC<FilterBarProps> = ({
             ))}
           </select>
         </label>
+      )}
+
+      {showTimeInputs && (
+        <span style={{ marginLeft: "20px" }}>
+          {t("Time_Range")}:
+          <input
+            type="number"
+            value={timeMin}
+            placeholder={t("Min")}
+            onChange={(e) => onTimeMinChange(e.target.value)}
+            style={{ width: "60px", marginLeft: "5px", marginRight:"5px" }}
+          />
+          -
+          <input
+            type="number"
+            value={timeMax}
+            placeholder={t("Max")}
+            onChange={(e) => onTimeMaxChange(e.target.value)}
+            style={{ width: "60px", marginLeft: "5px" }}
+          />
+        </span>
       )}
 
       {showSplitDiffInputs && (

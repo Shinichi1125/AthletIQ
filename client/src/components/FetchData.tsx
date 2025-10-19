@@ -7,7 +7,7 @@ import TrainingDetails from "./TrainingDetails";
 import Pagination from "./Pagination";
 import { Activity } from "../types";
 import FilterBar from "./FilterBar";
-import { isActivitySprintSets, isActivityShortSprint } from "../utils/helper";
+import { isActivitySprintSets, isActivityShortSprint, isActivityTempoRun } from "../utils/helper";
 import { SprintSet } from "../types";
 
 interface Props {
@@ -27,6 +27,8 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
   const [activityConditionInput, setActivityConditionInput] = useState("");
   const [splitDiffMinInput, setSplitDiffMinInput] = useState<string>("");
   const [splitDiffMaxInput, setSplitDiffMaxInput] = useState<string>("");
+  const [timeMinInput, setTimeMinInput] = useState<string>("");
+  const [timeMaxInput, setTimeMaxInput] = useState<string>("");
 
   const itemsPerPage = 10;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -53,6 +55,8 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
   const handleFilter = () => {
     const minDiff = parseFloat(splitDiffMinInput);
     const maxDiff = parseFloat(splitDiffMaxInput);
+    const minTime = parseFloat(timeMinInput);
+    const maxTime = parseFloat(timeMaxInput);
 
     const filtered = data.filter((trainingDay) =>
       trainingDay.Activities.some((activity: Activity) => {
@@ -62,23 +66,37 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
           if (activity.Condition !== activityConditionInput) return false;
         }
 
-        if (isActivitySprintSets(activity) && !isActivityShortSprint(activity) && !isNaN(minDiff) && !isNaN(maxDiff)) {
-          if (!activity.Sets) return false;
-
-          const hasSetInRange = (activity.Sets as SprintSet[]).some((set) => {
-            if (!set.Splits || set.Splits.length !== 2) return false;
-
-            const firstSplit = set.Splits[0];
-            const secondSplit = set.Splits[1];
-
-            if (!firstSplit.First_Half) return false;
-            if (!secondSplit.Second_Half) return false;
-
-            const diff = (secondSplit.Second_Half.Time ?? 0) - (firstSplit.First_Half.Time ?? 0);
-            return diff >= minDiff && diff <= maxDiff;
+        if ((isActivityShortSprint(activity) || isActivityTempoRun(activity)) && activity.Sets) {
+          return (activity.Sets as SprintSet[]).some((set) => {
+            const t = set.Time;
+            return (!isNaN(minTime) ? t >= minTime : true) &&
+                   (!isNaN(maxTime) ? t <= maxTime : true);
           });
-          return hasSetInRange;
         }
+
+        if (isActivitySprintSets(activity) && !isActivityShortSprint(activity) && activity.Sets) {
+          return (activity.Sets as SprintSet[]).some((set) => {
+            const t = set.Time;
+
+            const timeInRange =
+              (!isNaN(minTime) ? t >= minTime : true) &&
+              (!isNaN(maxTime) ? t <= maxTime : true);
+
+            let splitInRange = true;
+            if (set.Splits && set.Splits.length === 2 && !isNaN(minDiff) && !isNaN(maxDiff)) {
+              const firstSplit = set.Splits[0];
+              const secondSplit = set.Splits[1];
+
+              if (firstSplit.First_Half && secondSplit.Second_Half) {
+                const diff = (secondSplit.Second_Half.Time ?? 0) - (firstSplit.First_Half.Time ?? 0);
+                splitInRange = diff >= minDiff && diff <= maxDiff;
+              }
+            }
+
+            return timeInRange && splitInRange;
+          });
+        }
+
         return true;
       })
     );
@@ -101,16 +119,22 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
         activityCondition={activityConditionInput}
         splitDiffMin={splitDiffMinInput}
         splitDiffMax={splitDiffMaxInput}
+        timeMin={timeMinInput}
+        timeMax={timeMaxInput}
         onActivityNameChange={setActivityNameInput}
         onActivityConditionChange={setActivityConditionInput}
         onSplitDiffMinChange={setSplitDiffMinInput}
         onSplitDiffMaxChange={setSplitDiffMaxInput}
+        onTimeMinChange={setTimeMinInput}
+        onTimeMaxChange={setTimeMaxInput}
         onFilter={handleFilter}
         onClear={() => {
           setActivityNameInput("");
           setActivityConditionInput("");
           setSplitDiffMinInput("");
           setSplitDiffMaxInput("");
+          setTimeMinInput("");
+          setTimeMaxInput("");
           setFilteredData(data);
           setCurrentPage(1);
           setSelectedDay(null);
