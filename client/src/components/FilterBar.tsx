@@ -107,19 +107,23 @@ const FilterBar: React.FC<FilterBarProps> = ({
         <span style={{ marginLeft: "20px" }}>
           {t("Split_Diff_Range")}:
           <input
-            type="number"
+            type="text"
             value={splitDiffMin}
             placeholder={t("Min")}
             onChange={(e) => onSplitDiffMinChange(e.target.value)}
             style={{ width: "60px", marginLeft: "5px", marginRight:"5px" }}
+            inputMode="decimal"
+            pattern="^-?\d+(\.\d+)?$"
           />
           -
           <input
-            type="number"
+            type="text"
             value={splitDiffMax}
             placeholder={t("Max")}
             onChange={(e) => onSplitDiffMaxChange(e.target.value)}
             style={{ width: "60px", marginLeft: "5px" }}
+            inputMode="decimal"
+            pattern="^-?\d+(\.\d+)?$"
           />
         </span>
       )}
