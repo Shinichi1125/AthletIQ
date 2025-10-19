@@ -150,6 +150,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
 
       <TrainingList
         trainingDays={currentData}
+        selectedDay={selectedDay}
         onSelect={(day) => setSelectedDay(selectedDay === day ? null : day)}
       />
 
