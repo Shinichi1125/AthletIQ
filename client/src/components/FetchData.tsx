@@ -7,7 +7,7 @@ import TrainingDetails from "./TrainingDetails";
 import Pagination from "./Pagination";
 import { Activity } from "../types";
 import FilterBar from "./FilterBar";
-import { isActivitySprintSets } from "../utils/helper";
+import { isActivitySprintSets, isActivityShortSprint } from "../utils/helper";
 import { SprintSet } from "../types";
 
 interface Props {
@@ -62,7 +62,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
           if (activity.Condition !== activityConditionInput) return false;
         }
 
-        if (isActivitySprintSets(activity) && !isNaN(minDiff) && !isNaN(maxDiff)) {
+        if (isActivitySprintSets(activity) && !isActivityShortSprint(activity) && !isNaN(minDiff) && !isNaN(maxDiff)) {
           if (!activity.Sets) return false;
 
           const hasSetInRange = (activity.Sets as SprintSet[]).some((set) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { activityOptions, activityConditions } from "../constants/activityOptions";
-import { isActivitySprintSets } from "../utils/helper";
+import { isActivitySprintSets, isActivityShortSprint } from "../utils/helper";
 
 interface FilterBarProps {
   activityName: string;
@@ -30,7 +30,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   t,
 }) => {
   const showConditionDropdown = activityName === "One_Hand_Pullups";
-  const showSplitDiffInputs = isActivitySprintSets({ Activity: activityName });
+  const showSplitDiffInputs = isActivitySprintSets({ Activity: activityName }) && !isActivityShortSprint({ Activity: activityName });
 
   const isFilterDisabled =
     !activityName ||

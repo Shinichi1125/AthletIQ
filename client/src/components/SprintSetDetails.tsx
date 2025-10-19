@@ -1,6 +1,7 @@
 import React from "react";
 import { Activity, SprintSet } from "../types";
 import { useTranslation } from "react-i18next";
+import { isActivityShortSprint } from "../utils/helper";
 
 interface SprintSetProps {
   activity: Activity;
@@ -11,13 +12,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
   const shoes = activity.Shoes ? ` ${t(activity.Shoes)}` : "";
   const lightGreenRgbValue = "#72E972";
 
-  const isShortSprint = (activity: Activity) => {
-    if(activity.Activity.includes("100m")) return true;
-    if(activity.Activity.includes("50m")) return true;
-    return false;
-  }
-
-  const decimalPlace: number = isShortSprint(activity) ? 2 : 1;
+  const decimalPlace: number = isActivityShortSprint(activity) ? 2 : 1;
 
   return (
     <div>

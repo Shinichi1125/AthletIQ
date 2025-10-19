@@ -1,4 +1,5 @@
 import i18n from "../i18n";
+import { Activity } from "../types";
 
 export const formatDate = (isoDateString: string): string => {
   try {
@@ -15,7 +16,7 @@ export const formatDate = (isoDateString: string): string => {
   }
 };
 
-export const isActivitySprintSets = (activity: any): boolean => {
+export const isActivitySprintSets = (activity: Activity): boolean => {
   if(activity.Activity.includes("(100m run + 300m jog + 400m walk)")) return true;
   if(activity.Activity.includes("(200m run + 600m jog + 400m walk)")) return true;
   if(activity.Activity.includes("(300m run + 900m jog + 400m walk)")) return true;
@@ -24,5 +25,16 @@ export const isActivitySprintSets = (activity: any): boolean => {
   if(activity.Activity.includes("50m_Dash")) return true;
   if(activity.Activity.includes("Time_Trial")) return true;
   if(activity.Activity.includes("High_Knees_And")) return true;
+  return false;
+}
+
+export const isActivityShortSprint = (activity: Activity) => {
+  if(activity.Activity.includes("100m")) return true;
+  if(activity.Activity.includes("50m")) return true;
+  return false;
+}
+
+export const isActivityTempoRun = (activity: Activity): boolean => {
+  if(activity.Activity.includes("Tempo_Run")) return true;
   return false;
 }
