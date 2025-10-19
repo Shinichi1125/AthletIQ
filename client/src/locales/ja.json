@@ -67,6 +67,7 @@
   "Fifth_100m": "400〜500m地点",
   "Splits": "スプリットタイム",
   "Split_Difference": "前後半差",
+  "Split_Diff_Range": "前後半差許容範囲",
   "First_Half": "前半",
   "Second_Half": "後半",
   "Seconds": "秒",

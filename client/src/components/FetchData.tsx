@@ -7,6 +7,8 @@ import TrainingDetails from "./TrainingDetails";
 import Pagination from "./Pagination";
 import { Activity } from "../types";
 import FilterBar from "./FilterBar";
+import { isActivitySprintSets } from "../utils/helper";
+import { SprintSet } from "../types";
 
 interface Props {
   idToken?: string | null;
@@ -23,6 +25,8 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
 
   const [activityNameInput, setActivityNameInput] = useState<string>("");
   const [activityConditionInput, setActivityConditionInput] = useState("");
+  const [splitDiffMinInput, setSplitDiffMinInput] = useState<string>("");
+  const [splitDiffMaxInput, setSplitDiffMaxInput] = useState<string>("");
 
   const itemsPerPage = 10;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -47,15 +51,38 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
   }, [idToken]);
 
   const handleFilter = () => {
+    const minDiff = parseFloat(splitDiffMinInput);
+    const maxDiff = parseFloat(splitDiffMaxInput);
+
     const filtered = data.filter((trainingDay) =>
       trainingDay.Activities.some((activity: Activity) => {
         if (activityNameInput !== activity.Activity) return false;
+
         if (activity.Activity === "One_Hand_Pullups" && activityConditionInput) {
-          return activity.Condition === activityConditionInput;
+          if (activity.Condition !== activityConditionInput) return false;
+        }
+
+        if (isActivitySprintSets(activity) && !isNaN(minDiff) && !isNaN(maxDiff)) {
+          if (!activity.Sets) return false;
+
+          const hasSetInRange = (activity.Sets as SprintSet[]).some((set) => {
+            if (!set.Splits || set.Splits.length !== 2) return false;
+
+            const firstSplit = set.Splits[0];
+            const secondSplit = set.Splits[1];
+
+            if (!firstSplit.First_Half) return false;
+            if (!secondSplit.Second_Half) return false;
+
+            const diff = (secondSplit.Second_Half.Time ?? 0) - (firstSplit.First_Half.Time ?? 0);
+            return diff >= minDiff && diff <= maxDiff;
+          });
+          return hasSetInRange;
         }
         return true;
       })
     );
+
     setFilteredData(filtered);
     setSelectedDay(null);
     setCurrentPage(1);
@@ -72,12 +99,18 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
       <FilterBar
         activityName={activityNameInput}
         activityCondition={activityConditionInput}
+        splitDiffMin={splitDiffMinInput}
+        splitDiffMax={splitDiffMaxInput}
         onActivityNameChange={setActivityNameInput}
         onActivityConditionChange={setActivityConditionInput}
+        onSplitDiffMinChange={setSplitDiffMinInput}
+        onSplitDiffMaxChange={setSplitDiffMaxInput}
         onFilter={handleFilter}
         onClear={() => {
           setActivityNameInput("");
           setActivityConditionInput("");
+          setSplitDiffMinInput("");
+          setSplitDiffMaxInput("");
           setFilteredData(data);
           setCurrentPage(1);
           setSelectedDay(null);

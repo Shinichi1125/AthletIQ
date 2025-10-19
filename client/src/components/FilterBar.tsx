@@ -1,11 +1,16 @@
 import React from "react";
 import { activityOptions, activityConditions } from "../constants/activityOptions";
+import { isActivitySprintSets } from "../utils/helper";
 
 interface FilterBarProps {
   activityName: string;
   activityCondition: string;
+  splitDiffMin: string;
+  splitDiffMax: string;
   onActivityNameChange: (value: string) => void;
   onActivityConditionChange: (value: string) => void;
+  onSplitDiffMinChange: (value: string) => void;
+  onSplitDiffMaxChange: (value: string) => void;
   onFilter: () => void;
   onClear: () => void;
   t: (key: string) => string;
@@ -14,13 +19,23 @@ interface FilterBarProps {
 const FilterBar: React.FC<FilterBarProps> = ({
   activityName,
   activityCondition,
+  splitDiffMin,
+  splitDiffMax,
   onActivityNameChange,
   onActivityConditionChange,
+  onSplitDiffMinChange,
+  onSplitDiffMaxChange,
   onFilter,
   onClear,
   t,
 }) => {
-  const isFilterDisabled = !activityName || (activityName === "One_Hand_Pullups" && !activityCondition);
+  const showConditionDropdown = activityName === "One_Hand_Pullups";
+  const showSplitDiffInputs = isActivitySprintSets({ Activity: activityName });
+
+  const isFilterDisabled =
+    !activityName ||
+    (showConditionDropdown && !activityCondition) ||
+    (showSplitDiffInputs && (splitDiffMin === "" || splitDiffMax === ""));
 
   return (
     <div style={{ marginBottom: "10px" }}>
@@ -40,7 +55,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
         </select>
       </label>
 
-      {activityName === "One_Hand_Pullups" && (
+      {showConditionDropdown && (
         <label style={{ marginLeft: "20px" }}>
           {t("Condition")}:
           <select
@@ -58,7 +73,32 @@ const FilterBar: React.FC<FilterBarProps> = ({
         </label>
       )}
 
-      <button onClick={onFilter} style={{ marginLeft: "10px" }} disabled={isFilterDisabled}>
+      {showSplitDiffInputs && (
+        <span style={{ marginLeft: "20px" }}>
+          {t("Split_Diff_Range")}:
+          <input
+            type="number"
+            value={splitDiffMin}
+            placeholder={t("Min")}
+            onChange={(e) => onSplitDiffMinChange(e.target.value)}
+            style={{ width: "60px", marginLeft: "5px", marginRight:"5px" }}
+          />
+          -
+          <input
+            type="number"
+            value={splitDiffMax}
+            placeholder={t("Max")}
+            onChange={(e) => onSplitDiffMaxChange(e.target.value)}
+            style={{ width: "60px", marginLeft: "5px" }}
+          />
+        </span>
+      )}
+
+      <button
+        onClick={onFilter}
+        style={{ marginLeft: "10px" }}
+        disabled={isFilterDisabled}
+      >
         {t("Filter")}
       </button>
 
