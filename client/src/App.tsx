@@ -27,7 +27,7 @@ function App() {
   return (
     <div
       style={{
-        backgroundImage: `url(${process.env.PUBLIC_URL}/AthletIQ_background_image-1.png)`,
+        backgroundImage: `url(${process.env.PUBLIC_URL}/AthletIQ_background_image-2.png)`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
