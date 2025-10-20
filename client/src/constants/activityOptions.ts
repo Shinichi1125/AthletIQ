@@ -35,3 +35,8 @@ export const activityConditions = [
   "With_Support_Hand",
   "Negative"
 ];
+
+export const shoesType = [
+  "Spike_Shoes",
+  "Flat_Shoes"
+];

@@ -29,6 +29,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
   const [splitDiffMaxInput, setSplitDiffMaxInput] = useState<string>("");
   const [timeMinInput, setTimeMinInput] = useState<string>("");
   const [timeMaxInput, setTimeMaxInput] = useState<string>("");
+  const [shoesInput, setShoesInput] = useState("");
 
   const itemsPerPage = 10;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -67,6 +68,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
         }
 
         if ((isActivityShortSprint(activity) && activity.Sets)) {
+          if (shoesInput && activity.Shoes !== shoesInput) return false;
           return (activity.Sets as SprintSet[]).some((set) => {
             const t = set.Time;
             return (!isNaN(minTime) ? t >= minTime : true) &&
@@ -81,6 +83,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
         }
 
         if (isActivitySprintSets(activity) && !isActivityShortSprint(activity) && activity.Sets) {
+          if (shoesInput && activity.Shoes !== shoesInput) return false;
           return (activity.Sets as SprintSet[]).some((set) => {
             const t = set.Time;
 
@@ -127,12 +130,14 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
         splitDiffMax={splitDiffMaxInput}
         timeMin={timeMinInput}
         timeMax={timeMaxInput}
+        shoes={shoesInput}
         onActivityNameChange={setActivityNameInput}
         onActivityConditionChange={setActivityConditionInput}
         onSplitDiffMinChange={setSplitDiffMinInput}
         onSplitDiffMaxChange={setSplitDiffMaxInput}
         onTimeMinChange={setTimeMinInput}
         onTimeMaxChange={setTimeMaxInput}
+        onShoesChange={setShoesInput}
         onFilter={handleFilter}
         onClear={() => {
           setActivityNameInput("");

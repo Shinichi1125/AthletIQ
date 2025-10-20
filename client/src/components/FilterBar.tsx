@@ -1,5 +1,5 @@
 import React from "react";
-import { activityOptions, activityConditions } from "../constants/activityOptions";
+import { activityOptions, activityConditions, shoesType } from "../constants/activityOptions";
 import { isActivitySprintSets, isActivityShortSprint, isActivityTempoRun } from "../utils/helper";
 
 interface FilterBarProps {
@@ -9,12 +9,14 @@ interface FilterBarProps {
   splitDiffMax: string;
   timeMin: string;
   timeMax: string;
+  shoes: string;
   onActivityNameChange: (value: string) => void;
   onActivityConditionChange: (value: string) => void;
   onSplitDiffMinChange: (value: string) => void;
   onSplitDiffMaxChange: (value: string) => void;
   onTimeMinChange: (value: string) => void;
   onTimeMaxChange: (value: string) => void;
+  onShoesChange: (value: string) => void;
   onFilter: () => void;
   onClear: () => void;
   t: (key: string) => string;
@@ -27,12 +29,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
   splitDiffMax,
   timeMin,
   timeMax,
+  shoes,
   onActivityNameChange,
   onActivityConditionChange,
   onSplitDiffMinChange,
   onSplitDiffMaxChange,
   onTimeMinChange,
   onTimeMaxChange,
+  onShoesChange,
   onFilter,
   onClear,
   t,
@@ -40,6 +44,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const showConditionDropdown = activityName === "One_Hand_Pullups";
   const showTimeInputs = isActivitySprintSets({ Activity: activityName }) || isActivityTempoRun({ Activity: activityName });
   const showSplitDiffInputs = isActivitySprintSets({ Activity: activityName }) && !isActivityShortSprint({ Activity: activityName });
+  const showShoesDropdown = isActivitySprintSets({ Activity: activityName });
 
   const isFilterDisabled =
     !activityName ||
@@ -124,6 +129,24 @@ const FilterBar: React.FC<FilterBarProps> = ({
             pattern="^-?\d+(\.\d+)?$"
           />
         </span>
+      )}
+
+      {showShoesDropdown && (
+        <label style={{ marginLeft: "20px" }}>
+          {t("Shoes")}:
+          <select
+            value={shoes}
+            onChange={(e) => onShoesChange(e.target.value)}
+            style={{ marginLeft: "10px" }}
+          >
+            <option value="">{t("Select_Shoes")}</option>
+            {shoesType.map((shoe) => (
+              <option key={shoe} value={shoe}>
+                {t(shoe)}
+              </option>
+            ))}
+          </select>
+        </label>
       )}
 
       <button
