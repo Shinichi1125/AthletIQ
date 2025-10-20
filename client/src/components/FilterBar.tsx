@@ -45,11 +45,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const showTimeInputs = isActivitySprintSets({ Activity: activityName }) || isActivityTempoRun({ Activity: activityName });
   const showSplitDiffInputs = isActivitySprintSets({ Activity: activityName }) && !isActivityShortSprint({ Activity: activityName });
   const showShoesDropdown = isActivitySprintSets({ Activity: activityName });
-
-  const isFilterDisabled =
-    !activityName ||
-    (showConditionDropdown && !activityCondition) ||
-    (showSplitDiffInputs && (splitDiffMin === "" || splitDiffMax === ""));
+  const isFilterDisabled = !activityName || (showConditionDropdown && !activityCondition);
 
   return (
     <div style={{ marginBottom: "10px" }}>
