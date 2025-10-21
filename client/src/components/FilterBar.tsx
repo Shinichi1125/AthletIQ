@@ -10,6 +10,8 @@ interface FilterBarProps {
   timeMin: string;
   timeMax: string;
   shoes: string;
+  startDate: string;
+  endDate: string;
   onActivityNameChange: (value: string) => void;
   onActivityConditionChange: (value: string) => void;
   onSplitDiffMinChange: (value: string) => void;
@@ -17,6 +19,8 @@ interface FilterBarProps {
   onTimeMinChange: (value: string) => void;
   onTimeMaxChange: (value: string) => void;
   onShoesChange: (value: string) => void;
+  onStartDateChange: (value: string) => void;
+  onEndDateChange: (value: string) => void;
   onFilter: () => void;
   onClear: () => void;
   t: (key: string) => string;
@@ -30,6 +34,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
   timeMin,
   timeMax,
   shoes,
+  startDate,
+  endDate,
   onActivityNameChange,
   onActivityConditionChange,
   onSplitDiffMinChange,
@@ -37,6 +43,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
   onTimeMinChange,
   onTimeMaxChange,
   onShoesChange,
+  onStartDateChange,
+  onEndDateChange,
   onFilter,
   onClear,
   t,
@@ -144,6 +152,23 @@ const FilterBar: React.FC<FilterBarProps> = ({
           </select>
         </label>
       )}
+
+      <span style={{ marginLeft: "20px" }}>
+        {t("Date_Range")}:
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => onStartDateChange(e.target.value)}
+          style={{ marginLeft: "10px", marginRight: "10px" }}
+        />
+        —
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => onEndDateChange(e.target.value)}
+          style={{ marginLeft: "10px" }}
+        />
+      </span>
 
       <button
         onClick={onFilter}

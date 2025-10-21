@@ -30,6 +30,8 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
   const [timeMinInput, setTimeMinInput] = useState<string>("");
   const [timeMaxInput, setTimeMaxInput] = useState<string>("");
   const [shoesInput, setShoesInput] = useState("");
+  const [startDateInput, setStartDateInput] = useState<string>("");
+  const [endDateInput, setEndDateInput] = useState<string>("");
 
   const itemsPerPage = 10;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -59,8 +61,16 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
     const minTime = parseFloat(timeMinInput);
     const maxTime = parseFloat(timeMaxInput);
 
+    const inDateRange = (dayStr: string) => {
+      const d = (dayStr || "").slice(0, 10);
+      if (startDateInput && d < startDateInput) return false;
+      if (endDateInput && d > endDateInput) return false;
+      return true;
+    };
+
     const filtered = data.filter((trainingDay) =>
       trainingDay.Activities.some((activity: Activity) => {
+        if (!inDateRange(trainingDay.Date)) return false;
         if (activityNameInput !== activity.Activity) return false;
 
         if (activity.Activity === "One_Hand_Pullups" && activityConditionInput) {
@@ -131,6 +141,8 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
         timeMin={timeMinInput}
         timeMax={timeMaxInput}
         shoes={shoesInput}
+        startDate={startDateInput}
+        endDate={endDateInput}
         onActivityNameChange={setActivityNameInput}
         onActivityConditionChange={setActivityConditionInput}
         onSplitDiffMinChange={setSplitDiffMinInput}
@@ -138,6 +150,8 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
         onTimeMinChange={setTimeMinInput}
         onTimeMaxChange={setTimeMaxInput}
         onShoesChange={setShoesInput}
+        onStartDateChange={setStartDateInput}
+        onEndDateChange={setEndDateInput}
         onFilter={handleFilter}
         onClear={() => {
           setActivityNameInput("");
@@ -146,6 +160,9 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
           setSplitDiffMaxInput("");
           setTimeMinInput("");
           setTimeMaxInput("");
+          setShoesInput("");
+          setStartDateInput("");
+          setEndDateInput("");
           setFilteredData(data);
           setCurrentPage(1);
           setSelectedDay(null);
