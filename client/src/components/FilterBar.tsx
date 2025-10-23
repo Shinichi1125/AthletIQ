@@ -56,13 +56,12 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const isFilterDisabled = !activityName || (showConditionDropdown && !activityCondition);
 
   return (
-    <div style={{ marginBottom: "10px" }}>
-      <label>
-        {t("Activity_Name")}:
+    <div className="filter-bar">
+      <div className="filter-field">
+        <label>{t("Activity_Name")}</label>
         <select
           value={activityName}
           onChange={(e) => onActivityNameChange(e.target.value)}
-          style={{ marginLeft: "10px" }}
         >
           <option value="">{t("Select_Activity")}</option>
           {activityOptions.map((activity) => (
@@ -71,15 +70,15 @@ const FilterBar: React.FC<FilterBarProps> = ({
             </option>
           ))}
         </select>
-      </label>
+        <div className="filter-error" />
+      </div>
 
       {showConditionDropdown && (
-        <label style={{ marginLeft: "20px" }}>
-          {t("Condition")}:
+        <div className="filter-field">
+          <label>{t("Condition")}</label>
           <select
             value={activityCondition}
             onChange={(e) => onActivityConditionChange(e.target.value)}
-            style={{ marginLeft: "10px" }}
           >
             <option value="">{t("Select_Condition")}</option>
             {activityConditions.map((cond) => (
@@ -88,61 +87,66 @@ const FilterBar: React.FC<FilterBarProps> = ({
               </option>
             ))}
           </select>
-        </label>
+          <div className="filter-error" />
+        </div>
       )}
 
       {showTimeInputs && (
-        <span style={{ marginLeft: "20px" }}>
-          {t("Time_Range")}:
-          <input
-            type="number"
-            value={timeMin}
-            placeholder={t("Min")}
-            onChange={(e) => onTimeMinChange(e.target.value)}
-            style={{ width: "60px", marginLeft: "5px", marginRight:"5px" }}
-          />
-          -
-          <input
-            type="number"
-            value={timeMax}
-            placeholder={t("Max")}
-            onChange={(e) => onTimeMaxChange(e.target.value)}
-            style={{ width: "60px", marginLeft: "5px" }}
-          />
-        </span>
+        <div className="filter-field">
+          <label>{t("Time_Range")}</label>
+          <div style={{ display: "flex", gap: 6 }}>
+            <input
+              type="number"
+              value={timeMin}
+              placeholder={t("Min")}
+              onChange={(e) => onTimeMinChange(e.target.value)}
+              style={{ width: 80 }}
+            />
+            <span style={{ alignSelf: "center" }}>–</span>
+            <input
+              type="number"
+              value={timeMax}
+              placeholder={t("Max")}
+              onChange={(e) => onTimeMaxChange(e.target.value)}
+              style={{ width: 80 }}
+            />
+          </div>
+          <div className="filter-error" />
+        </div>
       )}
 
       {showSplitDiffInputs && (
-        <span style={{ marginLeft: "20px" }}>
-          {t("Split_Diff_Range")}:
-          <input
-            type="text"
-            value={splitDiffMin}
-            placeholder={t("Min")}
-            onChange={(e) => onSplitDiffMinChange(e.target.value)}
-            style={{ width: "60px", marginLeft: "5px", marginRight:"5px" }}
-            pattern="^-?\d+(\.\d+)?$"
-          />
-          -
-          <input
-            type="text"
-            value={splitDiffMax}
-            placeholder={t("Max")}
-            onChange={(e) => onSplitDiffMaxChange(e.target.value)}
-            style={{ width: "60px", marginLeft: "5px" }}
-            pattern="^-?\d+(\.\d+)?$"
-          />
-        </span>
+        <div className="filter-field">
+          <label>{t("Split_Diff_Range")}</label>
+          <div style={{ display: "flex", gap: 6 }}>
+            <input
+              type="text"
+              value={splitDiffMin}
+              placeholder={t("Min")}
+              onChange={(e) => onSplitDiffMinChange(e.target.value)}
+              inputMode="decimal"
+              pattern="^-?\d+(\.\d+)?$"
+              style={{ width: 80 }}
+            />
+            <span style={{ alignSelf: "center" }}>–</span>
+            <input
+              type="text"
+              value={splitDiffMax}
+              placeholder={t("Max")}
+              onChange={(e) => onSplitDiffMaxChange(e.target.value)}
+              inputMode="decimal"
+              pattern="^-?\d+(\.\d+)?$"
+              style={{ width: 80 }}
+            />
+          </div>
+          <div className="filter-error" />
+        </div>
       )}
 
       {showShoesDropdown && (
-        <label style={{ marginLeft: "20px" }}>
-          {t("Shoes")}:
-          <select
-            value={shoes}
-            onChange={(e) => onShoesChange(e.target.value)}
-            style={{ marginLeft: "10px" }}
-          >
+        <div className="filter-field">
+          <label>{t("Shoes")}</label>
+          <select value={shoes} onChange={(e) => onShoesChange(e.target.value)}>
             <option value="">{t("Select_Shoes")}</option>
             {shoesType.map((shoe) => (
               <option key={shoe} value={shoe}>
@@ -150,37 +154,34 @@ const FilterBar: React.FC<FilterBarProps> = ({
               </option>
             ))}
           </select>
-        </label>
+          <div className="filter-error" />
+        </div>
       )}
 
-      <span style={{ marginLeft: "20px" }}>
-        {t("Date_Range")}:
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => onStartDateChange(e.target.value)}
-          style={{ marginLeft: "10px", marginRight: "10px" }}
-        />
-        —
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => onEndDateChange(e.target.value)}
-          style={{ marginLeft: "10px" }}
-        />
-      </span>
+      <div className="filter-field">
+        <label>{t("Date_Range")}</label>
+        <div style={{ display: "flex", gap: 6 }}>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => onStartDateChange(e.target.value)}
+          />
+          <span style={{ alignSelf: "center" }}>—</span>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => onEndDateChange(e.target.value)}
+          />
+        </div>
+        <div className="filter-error" />
+      </div>
 
-      <button
-        onClick={onFilter}
-        style={{ marginLeft: "10px" }}
-        disabled={isFilterDisabled}
-      >
-        {t("Filter")}
-      </button>
-
-      <button onClick={onClear} style={{ marginLeft: "10px" }}>
-        {t("Reset")}
-      </button>
+      <div className="filter-actions">
+        <button onClick={onFilter} disabled={isFilterDisabled}>
+          {t("Filter")}
+        </button>
+        <button onClick={onClear}>{t("Reset")}</button>
+      </div>
     </div>
   );
 };
