@@ -14,3 +14,21 @@ ul ul {
 ul ul ul {
   padding-left: 0.8rem;
 }
+
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-size: 0.95rem;
+  min-width: 90px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button:focus {
+  outline: 2px solid #00b4d8;
+  outline-offset: 2px;
+}
