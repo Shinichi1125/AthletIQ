@@ -10,18 +10,21 @@
   flex-direction: column;
 }
 
+.filter-bar .filter-field,
+.filter-bar .filter-actions {
+  grid-column: 1 / -1;
+}
+
 .filter-field > label {
   font-size: 0.9rem;
   margin-bottom: 4px;
 }
 
-
 .filter-field select,
 .filter-field input {
-  height: 34px;
-  padding: 4px 8px;
+  height: 26px;
+  padding: 4px 4px;
 }
-
 
 .filter-error {
   min-height: 1em;

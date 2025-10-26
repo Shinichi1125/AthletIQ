@@ -1,6 +1,7 @@
 import React from "react";
 import { activityOptions, activityConditions, shoesType } from "../constants/activityOptions";
 import { isActivitySprintSets, isActivityShortSprint, isActivityTempoRun } from "../utils/helper";
+import "./FilterBar.css";
 
 interface FilterBarProps {
   activityName: string;
@@ -58,18 +59,17 @@ const FilterBar: React.FC<FilterBarProps> = ({
   return (
     <div className="filter-bar">
       <div className="filter-field">
-        <div style={{ display: "flex", gap: 6 }}>
-          <label>{t("Activity_Name")}</label>
-          <select
-            value={activityName}
-            onChange={(e) => onActivityNameChange(e.target.value)}
-          >
-            <option value="">{t("Select_Activity")}</option>
-            {activityOptions.map((activity) => (
-              <option key={activity} value={activity}>
-                {t(activity)}
-              </option>
-            ))}
+        <div>
+            <select
+              value={activityName}
+              onChange={(e) => onActivityNameChange(e.target.value)}
+            >
+              <option value="">{t("Select_Activity")}</option>
+              {activityOptions.map((activity) => (
+                <option key={activity} value={activity}>
+                  {t(activity)}
+                </option>
+              ))}
           </select>
         </div>
         <div className="filter-error" />
@@ -77,8 +77,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
       {showConditionDropdown && (
         <div className="filter-field">
-          <div style={{ display: "flex", gap: 6 }}>
-            <label>{t("Condition")}</label>
+          <div>
             <select
               value={activityCondition}
               onChange={(e) => onActivityConditionChange(e.target.value)}
@@ -97,8 +96,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
       {showTimeInputs && (
         <div className="filter-field">
+          <label>{t("Time_Range")}</label>
           <div style={{ display: "flex", gap: 6 }}>
-            <label>{t("Time_Range")}</label>
             <input
               type="number"
               value={timeMin}
@@ -121,8 +120,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
       {showSplitDiffInputs && (
         <div className="filter-field">
+          <label>{t("Split_Diff_Range")}</label>
           <div style={{ display: "flex", gap: 6 }}>
-            <label>{t("Split_Diff_Range")}</label>
             <input
               type="text"
               value={splitDiffMin}
@@ -147,8 +146,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
       {showShoesDropdown && (
         <div className="filter-field">
-          <div style={{ display: "flex", gap: 6 }}>
-            <label>{t("Shoes")}</label>
+          <div>
             <select value={shoes} onChange={(e) => onShoesChange(e.target.value)}>
               <option value="">{t("Select_Shoes")}</option>
               {shoesType.map((shoe) => (
@@ -164,7 +162,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
       <div className="filter-field">
         <div style={{ display: "flex", gap: 6 }}>
-          <label>{t("Date_Range")}</label>
           <input
             type="date"
             value={startDate}
