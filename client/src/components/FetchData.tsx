@@ -130,7 +130,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
+    <div className="content-container">
       <h1>{t("Title")}</h1>
 
       <FilterBar
