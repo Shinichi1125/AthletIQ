@@ -57,5 +57,6 @@ button:focus {
     padding: 10px;
     border-radius: 0;
     box-shadow: none;
+    background-color: transparent;
   }
 }
