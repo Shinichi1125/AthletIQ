@@ -1,6 +1,6 @@
 import React from "react";
 import { activityOptions, activityConditions, shoesType } from "../constants/activityOptions";
-import { isActivitySprintSets, isActivityShortSprint, isActivityTempoRun } from "../utils/helper";
+import { isActivitySprintSets, isActivityShortSprint, isActivityTempoRun, isWeightTraining } from "../utils/helper";
 import { FilterState } from "../types";
 import "./FilterBar.css";
 
@@ -26,6 +26,8 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
   const showTimeInputs = isActivitySprintSets({ Activity: activityName }) || isActivityTempoRun({ Activity: activityName });
   const showSplitDiffInputs = isActivitySprintSets({ Activity: activityName }) && !isActivityShortSprint({ Activity: activityName });
   const showShoesDropdown = isActivitySprintSets({ Activity: activityName });
+  const showWeightInputs = isWeightTraining({ Activity: activityName });
+  const showRepsInputs = showWeightInputs;
 
   const isFilterDisabled = !activityName || (showConditionDropdown && !activityCondition);
 
@@ -133,6 +135,54 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
                 </option>
               ))}
             </select>
+          </div>
+          <div className="filter-error" />
+        </div>
+      )}
+
+      {showWeightInputs && (
+        <div className="filter-field">
+          <label>{t("Weight_Range")}</label>
+          <div style={{ display: "flex", gap: 6 }}>
+            <input
+              type="number"
+              value={filters.weightMin}
+              placeholder={t("Min")}
+              onChange={(e) => onChange({ weightMin: e.target.value })}
+              style={{ width: 80 }}
+            />
+            <span style={{ alignSelf: "center" }}>–</span>
+            <input
+              type="number"
+              value={filters.weightMax}
+              placeholder={t("Max")}
+              onChange={(e) => onChange({ weightMax: e.target.value })}
+              style={{ width: 80 }}
+            />
+          </div>
+          <div className="filter-error" />
+        </div>
+      )}
+
+      {showRepsInputs && (
+        <div className="filter-field">
+          <label>{t("Reps_Range")}</label>
+          <div style={{ display: "flex", gap: 6 }}>
+            <input
+              type="number"
+              value={filters.repsMin}
+              placeholder={t("Min")}
+              onChange={(e) => onChange({ repsMin: e.target.value })}
+              style={{ width: 80 }}
+            />
+            <span style={{ alignSelf: "center" }}>–</span>
+            <input
+              type="number"
+              value={filters.repsMax}
+              placeholder={t("Max")}
+              onChange={(e) => onChange({ repsMax: e.target.value })}
+              style={{ width: 80 }}
+            />
           </div>
           <div className="filter-error" />
         </div>

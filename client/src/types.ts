@@ -8,6 +8,10 @@ export interface FilterState {
   shoes: string;
   startDate: string;
   endDate: string;
+  weightMin: string;
+  weightMax: string;
+  repsMin: string;
+  repsMax: string;
 }
 
 export interface TempoRunSplits {

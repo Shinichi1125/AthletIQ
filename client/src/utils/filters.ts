@@ -1,6 +1,6 @@
-import { Activity, SprintSet } from "../types";
-import { FilterState } from "../types";
-import { isActivitySprintSets, isActivityShortSprint, isActivityTempoRun } from "./helper";
+import { Activity, SprintSet, StrengthSet } from "../types";
+import { FilterState, UnitValue } from "../types";
+import { isWeightTraining, isActivitySprintSets, isActivityShortSprint, isActivityTempoRun } from "./helper";
 
 export function filterTrainingDays(data: any[], filters: FilterState): any[] {
   const {
@@ -16,6 +16,10 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
   const maxTime = parseFloat(timeMax);
   const minDiff = parseFloat(splitDiffMin);
   const maxDiff = parseFloat(splitDiffMax);
+  const minWeight = parseFloat(filters.weightMin);
+  const maxWeight = parseFloat(filters.weightMax);
+  const minReps   = parseFloat(filters.repsMin);
+  const maxReps   = parseFloat(filters.repsMax);
 
   const inDateRange = (dayStr: string) => {
     const d = (dayStr || "").slice(0, 10);
@@ -65,6 +69,32 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
 
           return timeOK && splitOK;
         });
+      }
+
+      if (isWeightTraining(activity)) {
+        if (activity.Sets && (activity.Sets as StrengthSet[]).length > 0) {
+          return (activity.Sets as StrengthSet[]).some((set) => {
+            const weightUnitValue = activity.Weight as UnitValue | undefined;
+            const weight = weightUnitValue?.Value;
+            const reps = (set as any).Reps as number | undefined;
+
+            const weightOK =
+              (isNaN(minWeight) || (weight ?? Number.NEGATIVE_INFINITY) >= minWeight) &&
+              (isNaN(maxWeight) || (weight ?? Number.POSITIVE_INFINITY) <= maxWeight);
+
+            const repsOK =
+              (isNaN(minReps) || (reps ?? Number.NEGATIVE_INFINITY) >= minReps) &&
+              (isNaN(maxReps) || (reps ?? Number.POSITIVE_INFINITY) <= maxReps);
+
+            const hasWeightFilter = !isNaN(minWeight) || !isNaN(maxWeight);
+            const hasRepsFilter = !isNaN(minReps) || !isNaN(maxReps);
+
+            if (hasWeightFilter && hasRepsFilter) return weightOK && repsOK;
+            if (hasWeightFilter) return weightOK;
+            if (hasRepsFilter) return repsOK;
+            return true;
+          });
+        }
       }
 
       return true;

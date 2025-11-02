@@ -21,6 +21,10 @@ const initialFilters: FilterState = {
   shoes: "",
   startDate: "",
   endDate: "",
+  weightMin: "",
+  weightMax: "",
+  repsMin: "",
+  repsMax: "",
 };
 
 const FetchData: React.FC<Props> = ({ idToken }) => {

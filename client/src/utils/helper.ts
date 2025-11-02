@@ -38,3 +38,13 @@ export const isActivityTempoRun = (activity: Activity): boolean => {
   if(activity.Activity.includes("Tempo_Run")) return true;
   return false;
 }
+
+export const isWeightTraining = (activity: { Activity: string }) => {
+  const a = activity.Activity;
+  return (
+    a === "Power_Clean" ||
+    a === "Power_Clean_and_Jerk" ||
+    a === "Hang_Power_Clean" ||
+    a === "Hang_Power_Clean_and_Jerk"
+  );
+};
