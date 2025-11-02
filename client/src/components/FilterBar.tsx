@@ -1,75 +1,48 @@
 import React from "react";
 import { activityOptions, activityConditions, shoesType } from "../constants/activityOptions";
 import { isActivitySprintSets, isActivityShortSprint, isActivityTempoRun } from "../utils/helper";
+import { FilterState } from "../types";
 import "./FilterBar.css";
 
 interface FilterBarProps {
-  activityName: string;
-  activityCondition: string;
-  splitDiffMin: string;
-  splitDiffMax: string;
-  timeMin: string;
-  timeMax: string;
-  shoes: string;
-  startDate: string;
-  endDate: string;
-  onActivityNameChange: (value: string) => void;
-  onActivityConditionChange: (value: string) => void;
-  onSplitDiffMinChange: (value: string) => void;
-  onSplitDiffMaxChange: (value: string) => void;
-  onTimeMinChange: (value: string) => void;
-  onTimeMaxChange: (value: string) => void;
-  onShoesChange: (value: string) => void;
-  onStartDateChange: (value: string) => void;
-  onEndDateChange: (value: string) => void;
+  filters: FilterState;
+  onChange: (patch: Partial<FilterState>) => void;
   onFilter: () => void;
   onClear: () => void;
   t: (key: string) => string;
 }
 
-const FilterBar: React.FC<FilterBarProps> = ({
-  activityName,
-  activityCondition,
-  splitDiffMin,
-  splitDiffMax,
-  timeMin,
-  timeMax,
-  shoes,
-  startDate,
-  endDate,
-  onActivityNameChange,
-  onActivityConditionChange,
-  onSplitDiffMinChange,
-  onSplitDiffMaxChange,
-  onTimeMinChange,
-  onTimeMaxChange,
-  onShoesChange,
-  onStartDateChange,
-  onEndDateChange,
-  onFilter,
-  onClear,
-  t,
-}) => {
+const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onClear, t }) => {
+  const {
+    activityName,
+    activityCondition,
+    timeMin, timeMax,
+    splitDiffMin, splitDiffMax,
+    shoes,
+    startDate, endDate,
+  } = filters;
+
   const showConditionDropdown = activityName === "One_Hand_Pullups";
   const showTimeInputs = isActivitySprintSets({ Activity: activityName }) || isActivityTempoRun({ Activity: activityName });
   const showSplitDiffInputs = isActivitySprintSets({ Activity: activityName }) && !isActivityShortSprint({ Activity: activityName });
   const showShoesDropdown = isActivitySprintSets({ Activity: activityName });
+
   const isFilterDisabled = !activityName || (showConditionDropdown && !activityCondition);
 
   return (
     <div className="filter-bar">
       <div className="filter-field">
         <div>
-            <select
-              value={activityName}
-              onChange={(e) => onActivityNameChange(e.target.value)}
-            >
-              <option value="">{t("Select_Activity")}</option>
-              {activityOptions.map((activity) => (
-                <option key={activity} value={activity}>
-                  {t(activity)}
-                </option>
-              ))}
+          <select
+            value={activityName}
+            onChange={(e) => onChange({ activityName: e.target.value })}
+          >
+            <option value="">{t("Select_Activity")}</option>
+            {activityOptions.map((activity) => (
+              <option key={activity} value={activity}>
+                {t(activity)}
+              </option>
+            ))}
           </select>
         </div>
         <div className="filter-error" />
@@ -80,7 +53,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           <div>
             <select
               value={activityCondition}
-              onChange={(e) => onActivityConditionChange(e.target.value)}
+              onChange={(e) => onChange({ activityCondition: e.target.value })}
             >
               <option value="">{t("Select_Condition")}</option>
               {activityConditions.map((cond) => (
@@ -102,7 +75,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               type="number"
               value={timeMin}
               placeholder={t("Min")}
-              onChange={(e) => onTimeMinChange(e.target.value)}
+              onChange={(e) => onChange({ timeMin: e.target.value })}
               style={{ width: 80 }}
             />
             <span style={{ alignSelf: "center" }}>–</span>
@@ -110,7 +83,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               type="number"
               value={timeMax}
               placeholder={t("Max")}
-              onChange={(e) => onTimeMaxChange(e.target.value)}
+              onChange={(e) => onChange({ timeMax: e.target.value })}
               style={{ width: 80 }}
             />
           </div>
@@ -126,7 +99,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
               type="text"
               value={splitDiffMin}
               placeholder={t("Min")}
-              onChange={(e) => onSplitDiffMinChange(e.target.value)}
+              onChange={(e) => onChange({ splitDiffMin: e.target.value })}
+              inputMode="decimal"
               pattern="^-?\d+(\.\d+)?$"
               style={{ width: 80 }}
             />
@@ -135,7 +109,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
               type="text"
               value={splitDiffMax}
               placeholder={t("Max")}
-              onChange={(e) => onSplitDiffMaxChange(e.target.value)}
+              onChange={(e) => onChange({ splitDiffMax: e.target.value })}
+              inputMode="decimal"
               pattern="^-?\d+(\.\d+)?$"
               style={{ width: 80 }}
             />
@@ -147,7 +122,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
       {showShoesDropdown && (
         <div className="filter-field">
           <div>
-            <select value={shoes} onChange={(e) => onShoesChange(e.target.value)}>
+            <select
+              value={shoes}
+              onChange={(e) => onChange({ shoes: e.target.value })}
+            >
               <option value="">{t("Select_Shoes")}</option>
               {shoesType.map((shoe) => (
                 <option key={shoe} value={shoe}>
@@ -165,13 +143,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
           <input
             type="date"
             value={startDate}
-            onChange={(e) => onStartDateChange(e.target.value)}
+            onChange={(e) => onChange({ startDate: e.target.value })}
           />
           <span style={{ alignSelf: "center" }}>—</span>
           <input
             type="date"
             value={endDate}
-            onChange={(e) => onEndDateChange(e.target.value)}
+            onChange={(e) => onChange({ endDate: e.target.value })}
           />
         </div>
         <div className="filter-error" />

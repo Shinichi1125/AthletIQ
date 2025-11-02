@@ -1,3 +1,15 @@
+export interface FilterState {
+  activityName: string;
+  activityCondition: string;
+  timeMin: string;
+  timeMax: string;
+  splitDiffMin: string;
+  splitDiffMax: string;
+  shoes: string;
+  startDate: string;
+  endDate: string;
+}
+
 export interface TempoRunSplits {
   First_100m?: number;
   Second_100m?: number;
