@@ -66,10 +66,10 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay, highligh
 
                 case "400m_Tempo_Run":
                 case "500m_Tempo_Run":
-                  return <TempoRunDetails activity={activity} />;
+                  return <TempoRunDetails activity={activity} highlightFlag={highlightFlag} />;
                 
                 case "Sprint_Sets":
-                  return <SprintSetDetails activity={activity} />;
+                  return <SprintSetDetails activity={activity} highlightFlag={highlightFlag} />;
 
                 case "Stretching":
                 case "Sprint_Drills":

@@ -4,14 +4,15 @@ import { useTranslation } from "react-i18next";
 
 interface TempoRunProps {
   activity: Activity;
+  highlightFlag: boolean;
 }
 
-const TempoRunDetails: React.FC<TempoRunProps> = ({ activity }) => {
+const TempoRunDetails: React.FC<TempoRunProps> = ({ activity, highlightFlag }) => {
   const { t } = useTranslation();
 
   return (
     <div>
-      <h4>{t(activity.Activity)}</h4>
+      <h4><span className={highlightFlag ? "highlight-activity" : undefined}>{t(activity.Activity)}</span></h4>
       <p><strong>{t("Time")}:</strong> {activity.Time}{t("Seconds")}</p>
       {activity.Splits && (
         <>

@@ -5,9 +5,10 @@ import { isActivityShortSprint } from "../utils/helper";
 
 interface SprintSetProps {
   activity: Activity;
+  highlightFlag: boolean;
 }
 
-const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
+const SprintSetDetails: React.FC<SprintSetProps> = ({ activity, highlightFlag }) => {
   const { t } = useTranslation();
   const shoes = activity.Shoes ? ` ${t(activity.Shoes)}` : "";
   const lightGreenRgbValue = "#72E972";
@@ -16,7 +17,7 @@ const SprintSetDetails: React.FC<SprintSetProps> = ({ activity }) => {
 
   return (
     <div>
-      <h4>{t(activity.Activity)}</h4>
+      <h4><span className={highlightFlag ? "highlight-activity" : undefined}>{t(activity.Activity)}</span></h4>
       {activity.Shoes && <p><strong>{t("Shoes")}:</strong> {shoes}</p>}
 
       {activity.Sets && (
