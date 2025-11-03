@@ -60,3 +60,10 @@ button:focus {
     background-color: transparent;
   }
 }
+
+.highlight-activity {
+  background: rgba(209, 216, 0, 0.614);
+  border-left: 4px solid #00b4d8;
+  border-radius: 8px;
+  padding: 10px;
+}

@@ -4,16 +4,17 @@ import { useTranslation } from "react-i18next";
 
 interface WeightTrainingProps {
   activity: Activity;
+  highlightFlag: boolean;
 }
 
-const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity }) => {
+const WeightTrainingDetails: React.FC<WeightTrainingProps> = ({ activity, highlightFlag }) => {
   const { t } = useTranslation();
   const weight = activity.Weight ? ` ${activity.Weight.Value}${activity.Weight.Unit}` : "";
   const condition = activity.Condition ? ` (${activity.Condition})` : "";
 
   return (
     <div>
-      <h4>{t(activity.Activity)}{weight}{condition}</h4>
+      <h4><span className={highlightFlag ? "highlight-activity" : undefined}>{t(activity.Activity)}{weight}{condition}</span></h4>
 
       {activity.Reps && (
         <p><strong>{t("Reps")}:</strong> {activity.Reps}</p>

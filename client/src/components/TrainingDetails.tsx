@@ -7,14 +7,27 @@ import { useTranslation } from "react-i18next";
 import CalisthenicsDetails from "./CalisthenicsDetails";
 import PlyometricsDetails from "./PlyometricsDetails";
 import { formatDate, isActivitySprintSets } from "../utils/helper";
+import { Activity } from "../types";
+
+interface HighlightSpec {
+  activityName?: string;
+}
 
 interface TrainingDetailsProps {
   trainingDay: any;
+  highlight?: HighlightSpec;
 }
 
-const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
+const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay, highlight }) => {
   const { t, i18n } = useTranslation();
   const isJapanese = i18n.language === "ja";
+
+  const activityMatchesHighlight = (a: Activity) => {
+    if (!highlight?.activityName) return false;
+    if (a.Activity !== highlight.activityName) return false;
+
+    return true;
+  };
 
   return (
     <div style={{ marginTop: "20px", padding: "15px", border: "1px solid #ddd" }}>
@@ -29,6 +42,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
           <li key={index} style={{ marginBottom: "10px" }}>
             {(() => {
               const activityType = isActivitySprintSets(activity) ? "Sprint_Sets" : activity.Activity;
+              const highlightFlag: boolean = activityMatchesHighlight(activity);
               switch (activityType) {
                 case "Plank":
                 case "Muscle_Ups":
@@ -44,7 +58,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay }) => {
                 case "Power_Clean_and_Jerk":
                 case "Hang_Power_Clean":
                 case "Hang_Power_Clean_and_Jerk":
-                  return <WeightTrainingDetails activity={activity} />;
+                  return <WeightTrainingDetails activity={activity} highlightFlag={highlightFlag} />;
 
                 case "Pogo_Skips":
                 case "Scissors_Hop_Skips":

@@ -109,7 +109,12 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
           <button onClick={() => setSelectedDay(null)} style={{ marginTop: "20px" }}>
             {t("hideDetails")}
           </button>
-          <TrainingDetails trainingDay={selectedDay} />
+          <TrainingDetails
+            trainingDay={selectedDay}
+            highlight={{
+              activityName: filters.activityName || undefined
+            }}
+          />
         </>
       )}
     </div>
