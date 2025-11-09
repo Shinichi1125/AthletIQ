@@ -4,14 +4,15 @@ import { useTranslation } from "react-i18next";
 
 interface CalisthenicsProps {
   activity: Activity;
+  highlightFlag: boolean;
 }
 
-const CalisthenicsDetails: React.FC<CalisthenicsProps> = ({ activity }) => {
+const CalisthenicsDetails: React.FC<CalisthenicsProps> = ({ activity, highlightFlag }) => {
   const { t } = useTranslation();
 
   return (
     <div>
-      <h4>{t(activity.Activity)}</h4>
+      <h4><span className={highlightFlag ? "highlight-activity" : undefined}>{t(activity.Activity)}</span></h4>
 
       {activity.Reps && (
         <p><strong>{t("Reps")}:</strong> {activity.Reps}</p>

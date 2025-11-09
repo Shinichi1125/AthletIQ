@@ -1,6 +1,13 @@
 import React from "react";
 import { activityOptions, activityConditions, shoesType } from "../constants/activityOptions";
-import { isActivitySprintSets, isActivityShortSprint, isActivityTempoRun, isWeightTraining } from "../utils/helper";
+import {
+  isActivitySprintSets,
+  isActivityShortSprint,
+  isActivityTempoRun,
+  isWeightTraining,
+  isTimeBasedCalisthenics,
+  isRepsBasedCalisthenics
+ } from "../utils/helper";
 import { FilterState } from "../types";
 import "./FilterBar.css";
 
@@ -23,11 +30,14 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
   } = filters;
 
   const showConditionDropdown = activityName === "One_Hand_Pullups";
-  const showTimeInputs = isActivitySprintSets({ Activity: activityName }) || isActivityTempoRun({ Activity: activityName });
+  const showTimeInputs =
+    isActivitySprintSets({ Activity: activityName }) ||
+    isActivityTempoRun({ Activity: activityName }) ||
+    isTimeBasedCalisthenics({ Activity: activityName });
   const showSplitDiffInputs = isActivitySprintSets({ Activity: activityName }) && !isActivityShortSprint({ Activity: activityName });
   const showShoesDropdown = isActivitySprintSets({ Activity: activityName });
   const showWeightInputs = isWeightTraining({ Activity: activityName });
-  const showRepsInputs = showWeightInputs;
+  const showRepsInputs = showWeightInputs || activityCondition || isRepsBasedCalisthenics({ Activity: activityName });
 
   const isFilterDisabled = !activityName || (showConditionDropdown && !activityCondition);
 
@@ -102,7 +112,6 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
               value={splitDiffMin}
               placeholder={t("Min")}
               onChange={(e) => onChange({ splitDiffMin: e.target.value })}
-              inputMode="decimal"
               pattern="^-?\d+(\.\d+)?$"
               style={{ width: 80 }}
             />
@@ -112,7 +121,6 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
               value={splitDiffMax}
               placeholder={t("Max")}
               onChange={(e) => onChange({ splitDiffMax: e.target.value })}
-              inputMode="decimal"
               pattern="^-?\d+(\.\d+)?$"
               style={{ width: 80 }}
             />

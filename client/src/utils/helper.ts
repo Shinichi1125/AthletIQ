@@ -48,3 +48,30 @@ export const isWeightTraining = (activity: { Activity: string }) => {
     a === "Hang_Power_Clean_and_Jerk"
   );
 };
+
+export const isRepsBasedCalisthenics = (activity: { Activity: string }) => {
+  const a = activity.Activity;
+  return (
+    a === "Muscle_Ups" ||
+    a === "Archer_Pullups"
+  );
+};
+
+export const isTimeBasedCalisthenics = (activity: { Activity: string }) => {
+  const a = activity.Activity;
+  return (
+    a === "Plank"
+  );
+};
+
+export const asSeconds = (time: any): number | undefined => {
+  if (!time) return undefined;
+  if (typeof time === "number") return time;
+  const val = typeof time.Value === "number" ? time.Value : undefined;
+  const unit = (time.Unit || "").toLowerCase();
+  if (val === undefined) return undefined;
+
+  if (unit.startsWith("sec")) return val;
+  if (unit.startsWith("min")) return val * 60;
+  return val;
+};

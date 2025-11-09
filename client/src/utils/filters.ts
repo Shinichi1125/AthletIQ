@@ -1,6 +1,14 @@
 import { Activity, SprintSet, StrengthSet } from "../types";
 import { FilterState, UnitValue } from "../types";
-import { isWeightTraining, isActivitySprintSets, isActivityShortSprint, isActivityTempoRun } from "./helper";
+import {
+  isWeightTraining,
+  isActivitySprintSets,
+  isActivityShortSprint,
+  isActivityTempoRun,
+  isRepsBasedCalisthenics,
+  isTimeBasedCalisthenics,
+  asSeconds
+} from "./helper";
 
 export function filterTrainingDays(data: any[], filters: FilterState): any[] {
   const {
@@ -93,6 +101,36 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
             if (hasWeightFilter) return weightOK;
             if (hasRepsFilter) return repsOK;
             return true;
+          });
+        }
+      }
+
+      if (isRepsBasedCalisthenics(activity)) {
+        const hasReps = !Number.isNaN(minReps) || !Number.isNaN(maxReps);
+        if (!hasReps) return true;
+        if (activity.Sets && (activity.Sets as any[]).length > 0) {
+          return (activity.Sets as any[]).some((set) => {
+            const reps = typeof set.Reps === "number" ? set.Reps : undefined;
+            const repsOK =
+              !hasReps ||
+              ((reps ?? Number.NEGATIVE_INFINITY) >= (Number.isNaN(minReps) ? -Infinity : minReps) &&
+               (reps ?? Number.POSITIVE_INFINITY) <= (Number.isNaN(maxReps) ? +Infinity : maxReps));
+            return repsOK;
+          });
+        }
+      }
+
+      if (isTimeBasedCalisthenics(activity)) {
+        const hasTime = !Number.isNaN(minTime) || !Number.isNaN(maxTime);
+        if (!hasTime) return true;
+        if (activity.Sets && (activity.Sets as any[]).length > 0) {
+          return (activity.Sets as any[]).some((set) => {
+            const secs = asSeconds(set.Time);
+            const timeOK =
+              !hasTime ||
+              ((secs ?? Number.NEGATIVE_INFINITY) >= (Number.isNaN(minTime) ? -Infinity : minTime) &&
+               (secs ?? Number.POSITIVE_INFINITY) <= (Number.isNaN(maxTime) ? +Infinity : maxTime));
+            return timeOK;
           });
         }
       }
