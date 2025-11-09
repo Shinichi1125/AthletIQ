@@ -75,3 +75,12 @@ export const asSeconds = (time: any): number | undefined => {
   if (unit.startsWith("min")) return val * 60;
   return val;
 };
+
+export const isSingleLimbExercise = (activity: { Activity: string }) => {
+  const a = activity.Activity;
+  return (
+    a === "One_Hand_Pushups" ||
+    a === "Single_Leg_Squats" ||
+    a === "One_Hand_Pullups"
+  );
+};

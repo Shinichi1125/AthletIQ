@@ -52,7 +52,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay, highligh
                 case "One_Hand_Pushups":
                 case "Single_Leg_Squats":
                 case "One_Hand_Pullups":
-                  return <SingleLimbExerciseDetails activity={activity} />;
+                  return <SingleLimbExerciseDetails activity={activity} highlightFlag={highlightFlag} />;
 
                 case "Power_Clean":
                 case "Power_Clean_and_Jerk":

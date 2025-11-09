@@ -1,4 +1,4 @@
-import { Activity, SprintSet, StrengthSet } from "../types";
+import { Activity, SprintSet, StrengthSet, SingleLimbReps } from "../types";
 import { FilterState, UnitValue } from "../types";
 import {
   isWeightTraining,
@@ -7,7 +7,8 @@ import {
   isActivityTempoRun,
   isRepsBasedCalisthenics,
   isTimeBasedCalisthenics,
-  asSeconds
+  asSeconds,
+  isSingleLimbExercise
 } from "./helper";
 
 export function filterTrainingDays(data: any[], filters: FilterState): any[] {
@@ -101,6 +102,48 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
             if (hasWeightFilter) return weightOK;
             if (hasRepsFilter) return repsOK;
             return true;
+          });
+        }
+      }
+
+      if (isSingleLimbExercise(activity)) {
+        if (activity.Activity === "One_Hand_Pullups" && activityCondition) {
+          if (activity.Condition !== activityCondition) return false;
+        }
+
+        const hasWeight = !Number.isNaN(minWeight) || !Number.isNaN(maxWeight);
+        const hasReps   = !Number.isNaN(minReps)   || !Number.isNaN(maxReps);
+
+        if (!hasWeight && !hasReps) return true;
+
+        if (activity.Sets && (activity.Sets as StrengthSet[]).length > 0) {
+          return (activity.Sets as StrengthSet[]).some((set) => {
+            const weightUnitValue = activity.Weight as UnitValue | undefined;
+            const weight = weightUnitValue?.Value;
+
+            const r = set.Reps;
+            const repsValues: number[] =
+              typeof r === "number"
+                ? [r]
+                : r && typeof r === "object"
+                ? Object.values(r as SingleLimbReps).filter((v): v is number => typeof v === "number")
+                : [];
+
+            const weightOK =
+              !hasWeight ||
+              ((weight ?? Number.NEGATIVE_INFINITY) >= (Number.isNaN(minWeight) ? -Infinity : minWeight) &&
+               (weight ?? Number.POSITIVE_INFINITY) <= (Number.isNaN(maxWeight) ? +Infinity : maxWeight));
+
+            const repsOK =
+              !hasReps ||
+              repsValues.some((val) =>
+                (Number.isNaN(minReps) || val >= minReps) &&
+                (Number.isNaN(maxReps) || val <= maxReps)
+              );
+
+            if (hasWeight && hasReps) return weightOK && repsOK;
+            if (hasWeight) return weightOK;
+            return repsOK;
           });
         }
       }

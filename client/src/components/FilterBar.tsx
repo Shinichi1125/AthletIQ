@@ -6,7 +6,8 @@ import {
   isActivityTempoRun,
   isWeightTraining,
   isTimeBasedCalisthenics,
-  isRepsBasedCalisthenics
+  isRepsBasedCalisthenics,
+  isSingleLimbExercise
  } from "../utils/helper";
 import { FilterState } from "../types";
 import "./FilterBar.css";
@@ -36,7 +37,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
     isTimeBasedCalisthenics({ Activity: activityName });
   const showSplitDiffInputs = isActivitySprintSets({ Activity: activityName }) && !isActivityShortSprint({ Activity: activityName });
   const showShoesDropdown = isActivitySprintSets({ Activity: activityName });
-  const showWeightInputs = isWeightTraining({ Activity: activityName });
+  const showWeightInputs = isWeightTraining({ Activity: activityName }) || isSingleLimbExercise({ Activity: activityName });;
   const showRepsInputs = showWeightInputs || activityCondition || isRepsBasedCalisthenics({ Activity: activityName });
 
   const isFilterDisabled = !activityName || (showConditionDropdown && !activityCondition);

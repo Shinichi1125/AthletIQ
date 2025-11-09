@@ -4,9 +4,10 @@ import { useTranslation } from "react-i18next";
 
 interface SingleLimbProps {
   activity: Activity;
+  highlightFlag: boolean;
 }
 
-const SingleLimbExerciseDetails: React.FC<SingleLimbProps> = ({ activity }) => {
+const SingleLimbExerciseDetails: React.FC<SingleLimbProps> = ({ activity, highlightFlag }) => {
   const { t } = useTranslation();
   const strengthSets = activity.Sets as StrengthSet[];
   const weight = activity.Weight ? ` ${activity.Weight.Value}${activity.Weight.Unit}` : "";
@@ -14,7 +15,7 @@ const SingleLimbExerciseDetails: React.FC<SingleLimbProps> = ({ activity }) => {
 
   return (
     <div>
-      <h4>{t(activity.Activity)}{weight}{condition}</h4>
+      <h4><span className={highlightFlag ? "highlight-activity" : undefined}>{t(activity.Activity)}{weight}{condition}</span></h4>
       {strengthSets && (
         <>
           <ul>
