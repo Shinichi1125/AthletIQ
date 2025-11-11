@@ -83,6 +83,12 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay, highligh
         ))}
       </ul>
 
+      {trainingDay.Body_Weight && (
+        <>
+          <p><strong>{t("Body_Weight")}:</strong> {trainingDay.Body_Weight.Value}{trainingDay.Body_Weight.Unit}</p>
+        </>
+      )}
+
       {trainingDay.Notes && isJapanese && (
         <>
           <h3>{t("Notes")}:</h3>

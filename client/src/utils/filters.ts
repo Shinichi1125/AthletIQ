@@ -74,6 +74,8 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
               const diff = (secondSplit.Second_Half.Time ?? 0) - (firstSplit.First_Half.Time ?? 0);
               splitOK = diff >= minDiff && diff <= maxDiff;
             }
+          } else if(!set.Splits && !isNaN(minDiff) && !isNaN(maxDiff)) {
+            splitOK = false;
           }
 
           return timeOK && splitOK;
