@@ -12,6 +12,7 @@ export interface FilterState {
   weightMax: string;
   repsMin: string;
   repsMax: string;
+  noteQuery: string;
 }
 
 export interface TempoRunSplits {

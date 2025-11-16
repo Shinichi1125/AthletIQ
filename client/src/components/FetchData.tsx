@@ -25,10 +25,12 @@ const initialFilters: FilterState = {
   weightMax: "",
   repsMin: "",
   repsMax: "",
+  noteQuery: "",
 };
 
 const FetchData: React.FC<Props> = ({ idToken }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isJapanese = i18n.language === "ja";
   const [data, setData] = useState<any[]>([]);
   const [filteredData, setFilteredData] = useState<any[]>([]);
   const [selectedDay, setSelectedDay] = useState<any | null>(null);
@@ -88,6 +90,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
         onChange={updateFilters}
         onFilter={handleFilter}
         onClear={handleClear}
+        isJapanese={isJapanese}
         t={t}
       />
 

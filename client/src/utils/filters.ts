@@ -11,6 +11,23 @@ import {
   isSingleLimbExercise
 } from "./helper";
 
+function notesText(day: any): string {
+  if (!day?.Notes) return "";
+  const parts: string[] = [];
+  for (const entry of day.Notes) {
+    const n = entry?.note;
+    if (!n) continue;
+    if (Array.isArray(n)) {
+      for (const piece of n) {
+        if (typeof piece?.text === "string") parts.push(piece.text);
+      }
+    } else if (typeof n?.text === "string") {
+      parts.push(n.text);
+    }
+  }
+  return parts.join(" ");
+}
+
 export function filterTrainingDays(data: any[], filters: FilterState): any[] {
   const {
     activityName,
@@ -37,9 +54,18 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
     return true;
   };
 
-  return data.filter((trainingDay) =>
-    inDateRange(trainingDay.Date) &&
-    trainingDay.Activities.some((activity: Activity) => {
+  const q = (filters.noteQuery || "").trim().toLowerCase();
+  let searchWordIncluded = false;
+
+  return data.filter((trainingDay) => {
+    if (!inDateRange(trainingDay.Date)) return false;
+    if (q) {
+      const blob = notesText(trainingDay).toLowerCase();
+      searchWordIncluded = blob.includes(q);
+      if (!blob.includes(q)) return false;
+    }
+    return trainingDay.Activities.some((activity: Activity) => {
+      if (activityName === '') return searchWordIncluded;
       if (activityName !== activity.Activity) return false;
 
       if (activity.Activity === "One_Hand_Pullups" && activityCondition) {
@@ -182,5 +208,5 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
 
       return true;
     })
-  );
+  });
 }

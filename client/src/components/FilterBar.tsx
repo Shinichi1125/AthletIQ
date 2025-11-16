@@ -17,10 +17,11 @@ interface FilterBarProps {
   onChange: (patch: Partial<FilterState>) => void;
   onFilter: () => void;
   onClear: () => void;
+  isJapanese: boolean;
   t: (key: string) => string;
 }
 
-const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onClear, t }) => {
+const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onClear, isJapanese, t }) => {
   const {
     activityName,
     activityCondition,
@@ -28,6 +29,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
     splitDiffMin, splitDiffMax,
     shoes,
     startDate, endDate,
+    noteQuery
   } = filters;
 
   const showConditionDropdown = activityName === "One_Hand_Pullups";
@@ -40,7 +42,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
   const showWeightInputs = isWeightTraining({ Activity: activityName }) || isSingleLimbExercise({ Activity: activityName });;
   const showRepsInputs = showWeightInputs || activityCondition || isRepsBasedCalisthenics({ Activity: activityName });
 
-  const isFilterDisabled = !activityName || (showConditionDropdown && !activityCondition);
+  const isFilterDisabled = (!activityName && noteQuery === '') || (showConditionDropdown && !activityCondition);
 
   return (
     <div className="filter-bar">
@@ -191,6 +193,21 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
               placeholder={t("Max")}
               onChange={(e) => onChange({ repsMax: e.target.value })}
               style={{ width: 80 }}
+            />
+          </div>
+          <div className="filter-error" />
+        </div>
+      )}
+
+      {isJapanese && (
+        <div className="filter-field">
+          <div>
+            <input
+              type="text"
+              value={filters.noteQuery}
+              placeholder={t("Enter_Keyword")}
+              onChange={(e) => onChange({ noteQuery: e.target.value })}
+              style={{ width: 220 }}
             />
           </div>
           <div className="filter-error" />
