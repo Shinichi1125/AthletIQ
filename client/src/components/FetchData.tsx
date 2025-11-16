@@ -115,7 +115,8 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
           <TrainingDetails
             trainingDay={selectedDay}
             highlight={{
-              activityName: filters.activityName || undefined
+              activityName: filters.activityName || undefined,
+              noteQuery: filters.noteQuery || undefined,
             }}
           />
         </>

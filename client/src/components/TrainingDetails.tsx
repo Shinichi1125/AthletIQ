@@ -11,6 +11,7 @@ import { Activity } from "../types";
 
 interface HighlightSpec {
   activityName?: string;
+  noteQuery?: string;
 }
 
 interface TrainingDetailsProps {
@@ -21,6 +22,18 @@ interface TrainingDetailsProps {
 const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay, highlight }) => {
   const { t, i18n } = useTranslation();
   const isJapanese = i18n.language === "ja";
+  const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  const highlightText = (text: string, query?: string) => {
+    if (!query) return text;
+    const safe = escapeRegExp(query.trim());
+    if (!safe) return text;
+    const re = new RegExp(`(${safe})`, "gi");
+    const parts = text.split(re);
+    return parts.map((part, i) =>
+      re.test(part) ? <mark key={i}>{part}</mark> : <React.Fragment key={i}>{part}</React.Fragment>
+    );
+  };
 
   const activityMatchesHighlight = (a: Activity) => {
     if (!highlight?.activityName) return false;
@@ -101,15 +114,21 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay, highligh
                     <span key={i}>
                       {note.link ? (
                         <a href={note.link} target="_blank" rel="noopener noreferrer">
-                          {note.text}
+                          {highlightText(note.text ?? "", highlight?.noteQuery)}
                         </a>
-                      ) : note.text}
+                      ) : (
+                        highlightText(note.text ?? "", highlight?.noteQuery)
+                      )}
                     </span>
                   ))}
                 </p>
               );
             } else {
-              return <p key={index}>{noteData.text}</p>;
+              return (
+                <p key={index}>
+                  {highlightText(noteData?.text ?? "", highlight?.noteQuery)}
+                </p>
+              );
             }
           })}
         </>
