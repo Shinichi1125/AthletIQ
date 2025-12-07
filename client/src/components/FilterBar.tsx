@@ -42,7 +42,8 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
   const showWeightInputs = isWeightTraining({ Activity: activityName }) || isSingleLimbExercise({ Activity: activityName });;
   const showRepsInputs = showWeightInputs || activityCondition || isRepsBasedCalisthenics({ Activity: activityName });
 
-  const isFilterDisabled = (!activityName && noteQuery === '') || (showConditionDropdown && !activityCondition);
+  const hasDateRange = Boolean(startDate && endDate);
+  const isFilterDisabled = (!activityName && noteQuery === '' && !hasDateRange) || (showConditionDropdown && !activityCondition);
 
   return (
     <div className="filter-bar">

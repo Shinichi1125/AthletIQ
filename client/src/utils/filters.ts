@@ -55,17 +55,15 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
   };
 
   const q = (filters.noteQuery || "").trim().toLowerCase();
-  let searchWordIncluded = false;
 
   return data.filter((trainingDay) => {
     if (!inDateRange(trainingDay.Date)) return false;
     if (q) {
       const blob = notesText(trainingDay).toLowerCase();
-      searchWordIncluded = blob.includes(q);
       if (!blob.includes(q)) return false;
     }
     return trainingDay.Activities.some((activity: Activity) => {
-      if (activityName === '') return searchWordIncluded;
+      if (activityName === '') return true;
       if (activityName !== activity.Activity) return false;
 
       if (activity.Activity === "One_Hand_Pullups" && activityCondition) {
