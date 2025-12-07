@@ -29,7 +29,8 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
     splitDiffMin, splitDiffMax,
     shoes,
     startDate, endDate,
-    noteQuery
+    noteQuery,
+    setCount
   } = filters;
 
   const showConditionDropdown = activityName === "One_Hand_Pullups";
@@ -41,6 +42,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
   const showShoesDropdown = isActivitySprintSets({ Activity: activityName });
   const showWeightInputs = isWeightTraining({ Activity: activityName }) || isSingleLimbExercise({ Activity: activityName });;
   const showRepsInputs = showWeightInputs || activityCondition || isRepsBasedCalisthenics({ Activity: activityName });
+  const showSetCountInput = Boolean(activityName);
 
   const hasDateRange = Boolean(startDate && endDate);
   const isFilterDisabled = (!activityName && noteQuery === '' && !hasDateRange) || (showConditionDropdown && !activityCondition);
@@ -193,6 +195,23 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
               value={filters.repsMax}
               placeholder={t("Max")}
               onChange={(e) => onChange({ repsMax: e.target.value })}
+              style={{ width: 80 }}
+            />
+          </div>
+          <div className="filter-error" />
+        </div>
+      )}
+
+      {showSetCountInput && (
+        <div className="filter-field">
+          <label>{t("Set_Count")}</label>
+          <div>
+            <input
+              type="number"
+              min={1}
+              value={setCount}
+              placeholder={t("Set_Count")}
+              onChange={(e) => onChange({ setCount: e.target.value })}
               style={{ width: 80 }}
             />
           </div>

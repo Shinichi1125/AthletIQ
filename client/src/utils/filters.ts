@@ -36,6 +36,7 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
     splitDiffMin, splitDiffMax,
     shoes,
     startDate, endDate,
+    setCount,
   } = filters;
 
   const minTime = parseFloat(timeMin);
@@ -46,6 +47,8 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
   const maxWeight = parseFloat(filters.weightMax);
   const minReps   = parseFloat(filters.repsMin);
   const maxReps   = parseFloat(filters.repsMax);
+  const targetSetCount = parseInt(setCount, 10);
+  const requiresSetCount = !Number.isNaN(targetSetCount) && targetSetCount > 0;
 
   const inDateRange = (dayStr: string) => {
     const d = (dayStr || "").slice(0, 10);
@@ -55,6 +58,17 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
   };
 
   const q = (filters.noteQuery || "").trim().toLowerCase();
+
+  const hasMatchingSets = <T,>(sets: T[] | undefined, predicate: (set: T) => boolean) => {
+    if (!sets || sets.length === 0) return false;
+    let matches = 0;
+    for (const set of sets) {
+      if (predicate(set)) matches += 1;
+    }
+    if (matches === 0) return false;
+    if (requiresSetCount) return matches >= targetSetCount;
+    return true;
+  };
 
   return data.filter((trainingDay) => {
     if (!inDateRange(trainingDay.Date)) return false;
@@ -72,13 +86,14 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
 
       if (isActivityShortSprint(activity) && activity.Sets) {
         if (shoes && activity.Shoes !== shoes) return false;
-        return (activity.Sets as SprintSet[]).some((set) => {
+        return hasMatchingSets(activity.Sets as SprintSet[], (set) => {
           const t = set.Time;
           return (isNaN(minTime) || t >= minTime) && (isNaN(maxTime) || t <= maxTime);
         });
       }
 
       if (isActivityTempoRun(activity)) {
+        if (requiresSetCount) return false;
         const t = activity.Time ?? 0;
         return (isNaN(minTime) || t >= minTime) && (isNaN(maxTime) || t <= maxTime);
       }
@@ -86,7 +101,7 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
       if (isActivitySprintSets(activity) && !isActivityShortSprint(activity) && activity.Sets) {
         if (shoes && activity.Shoes !== shoes) return false;
 
-        return (activity.Sets as SprintSet[]).some((set) => {
+        return hasMatchingSets(activity.Sets as SprintSet[], (set) => {
           const t = set.Time;
           const timeOK = (isNaN(minTime) || t >= minTime) && (isNaN(maxTime) || t <= maxTime);
 
@@ -108,7 +123,7 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
 
       if (isWeightTraining(activity)) {
         if (activity.Sets && (activity.Sets as StrengthSet[]).length > 0) {
-          return (activity.Sets as StrengthSet[]).some((set) => {
+          return hasMatchingSets(activity.Sets as StrengthSet[], (set) => {
             const weightUnitValue = activity.Weight as UnitValue | undefined;
             const weight = weightUnitValue?.Value;
             const reps = (set as any).Reps as number | undefined;
@@ -130,6 +145,8 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
             return true;
           });
         }
+
+        if (requiresSetCount) return false;
       }
 
       if (isSingleLimbExercise(activity)) {
@@ -140,10 +157,10 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
         const hasWeight = !Number.isNaN(minWeight) || !Number.isNaN(maxWeight);
         const hasReps   = !Number.isNaN(minReps)   || !Number.isNaN(maxReps);
 
-        if (!hasWeight && !hasReps) return true;
+        if (!hasWeight && !hasReps && !requiresSetCount) return true;
 
         if (activity.Sets && (activity.Sets as StrengthSet[]).length > 0) {
-          return (activity.Sets as StrengthSet[]).some((set) => {
+          return hasMatchingSets(activity.Sets as StrengthSet[], (set) => {
             const weightUnitValue = activity.Weight as UnitValue | undefined;
             const weight = weightUnitValue?.Value;
 
@@ -172,36 +189,49 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
             return repsOK;
           });
         }
+
+        return requiresSetCount ? false : !hasWeight && !hasReps;
       }
 
       if (isRepsBasedCalisthenics(activity)) {
         const hasReps = !Number.isNaN(minReps) || !Number.isNaN(maxReps);
-        if (!hasReps) return true;
+        const shouldCheckSets = hasReps || requiresSetCount;
+        if (!shouldCheckSets) return true;
         if (activity.Sets && (activity.Sets as any[]).length > 0) {
-          return (activity.Sets as any[]).some((set) => {
+          return hasMatchingSets(activity.Sets as any[], (set) => {
+            if (!hasReps) return true;
             const reps = typeof set.Reps === "number" ? set.Reps : undefined;
             const repsOK =
-              !hasReps ||
               ((reps ?? Number.NEGATIVE_INFINITY) >= (Number.isNaN(minReps) ? -Infinity : minReps) &&
                (reps ?? Number.POSITIVE_INFINITY) <= (Number.isNaN(maxReps) ? +Infinity : maxReps));
             return repsOK;
           });
         }
+
+        return false;
       }
 
       if (isTimeBasedCalisthenics(activity)) {
         const hasTime = !Number.isNaN(minTime) || !Number.isNaN(maxTime);
-        if (!hasTime) return true;
+        const shouldCheckSets = hasTime || requiresSetCount;
+        if (!shouldCheckSets) return true;
         if (activity.Sets && (activity.Sets as any[]).length > 0) {
-          return (activity.Sets as any[]).some((set) => {
+          return hasMatchingSets(activity.Sets as any[], (set) => {
+            if (!hasTime) return true;
             const secs = asSeconds(set.Time);
             const timeOK =
-              !hasTime ||
               ((secs ?? Number.NEGATIVE_INFINITY) >= (Number.isNaN(minTime) ? -Infinity : minTime) &&
                (secs ?? Number.POSITIVE_INFINITY) <= (Number.isNaN(maxTime) ? +Infinity : maxTime));
             return timeOK;
           });
         }
+
+        return false;
+      }
+
+      if (requiresSetCount) {
+        const sets = activity.Sets as any[] | undefined;
+        if (!sets || sets.length < targetSetCount) return false;
       }
 
       return true;

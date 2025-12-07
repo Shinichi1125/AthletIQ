@@ -25,6 +25,7 @@ const initialFilters: FilterState = {
   weightMax: "",
   repsMin: "",
   repsMax: "",
+  setCount: "",
   noteQuery: "",
 };
 

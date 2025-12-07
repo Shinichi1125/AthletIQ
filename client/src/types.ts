@@ -12,6 +12,7 @@ export interface FilterState {
   weightMax: string;
   repsMin: string;
   repsMax: string;
+  setCount: string;
   noteQuery: string;
 }
 
