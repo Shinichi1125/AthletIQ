@@ -111,6 +111,19 @@ def fetch_and_convert(request):
     try:
         raw = fetch_google_docs_content()
         data = validate_json_format(raw)
+
+        # Sort results by Date DESC (newest first)
+        from datetime import datetime
+
+        def normalize_date(item):
+            try:
+                d = (item.get("Date") or "")[:10]
+                return datetime.strptime(d, "%Y-%m-%d")
+            except Exception:
+                return datetime.min
+
+        data.sort(key=normalize_date, reverse=True)
+
         body = json.dumps(data, ensure_ascii=False)
         return cors_response(body, 200, req_origin=req_origin)
     except Exception as e:
