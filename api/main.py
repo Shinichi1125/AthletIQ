@@ -9,7 +9,11 @@ import google.auth
 from google.oauth2 import id_token
 from google.auth.transport import requests as grequests
 
-DOCUMENT_ID = os.getenv("DOCUMENT_ID", "").strip()
+DOC_IDS = [
+    d.strip()
+    for d in os.getenv("DOCUMENT_IDS", "").split(",")
+    if d.strip()
+]
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "").strip()
 
 ALLOWED_ORIGINS = {
@@ -66,16 +70,13 @@ def verify_id_token(authorization_header: str | None):
     except Exception as e:
         return (False, f"Token verification failed: {e}")
 
-def fetch_google_docs_content():
+def fetch_google_doc_as_text(document_id: str) -> str:
     """Fetch plain text from a Google Doc using Application Default Credentials."""
-    if not DOCUMENT_ID:
-        raise RuntimeError("DOCUMENT_ID is not set")
-
     SCOPES = ["https://www.googleapis.com/auth/documents.readonly"]
     creds, _ = google.auth.default(scopes=SCOPES)  
     service = build("docs", "v1", credentials=creds)
 
-    document = service.documents().get(documentId=DOCUMENT_ID).execute()
+    document = service.documents().get(documentId=document_id).execute()
     content = []
     for element in document.get("body", {}).get("content", []):
         if "paragraph" in element:
@@ -86,6 +87,25 @@ def fetch_google_docs_content():
                     if piece:
                         content.append(piece)
     return "\n".join(content)
+
+def fetch_all_docs_json() -> list[OrderedDict]:
+    """
+    For each ID in DOC_IDS:
+      - fetch the document text
+      - parse it via validate_json_format (each doc is a JSON array)
+      - extend a single combined list
+    Return the combined list.
+    Raise RuntimeError if DOC_IDS is empty.
+    """
+    if not DOC_IDS:
+        raise RuntimeError("DOCUMENT_IDS is not set")
+
+    combined: list[OrderedDict] = []
+    for document_id in DOC_IDS:
+        raw = fetch_google_doc_as_text(document_id)
+        data = validate_json_format(raw)
+        combined.extend(data)
+    return combined
 
 def validate_json_format(json_string):
     """Ensure the doc contains a JSON array of objects (order-preserving)."""
@@ -109,8 +129,7 @@ def fetch_and_convert(request):
         return cors_response(jsonify({"error": str(info)}), status, req_origin=req_origin)
 
     try:
-        raw = fetch_google_docs_content()
-        data = validate_json_format(raw)
+        data = fetch_all_docs_json()
 
         # Sort results by Date DESC (newest first)
         from datetime import datetime
