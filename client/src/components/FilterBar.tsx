@@ -18,10 +18,19 @@ interface FilterBarProps {
   onFilter: () => void;
   onClear: () => void;
   isJapanese: boolean;
+  guestMode?: boolean;
   t: (key: string) => string;
 }
 
-const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onClear, isJapanese, t }) => {
+const FilterBar: React.FC<FilterBarProps> = ({
+  filters,
+  onChange,
+  onFilter,
+  onClear,
+  isJapanese,
+  guestMode = false,
+  t,
+}) => {
   const {
     activityName,
     activityCondition,
@@ -219,7 +228,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange, onFilter, onCl
         </div>
       )}
 
-      {isJapanese && (
+      {isJapanese && !guestMode && (
         <div className="filter-field">
           <div>
             <input

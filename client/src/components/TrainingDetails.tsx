@@ -17,9 +17,14 @@ interface HighlightSpec {
 interface TrainingDetailsProps {
   trainingDay: any;
   highlight?: HighlightSpec;
+  guestMode?: boolean;
 }
 
-const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay, highlight }) => {
+const TrainingDetails: React.FC<TrainingDetailsProps> = ({
+  trainingDay,
+  highlight,
+  guestMode = false,
+}) => {
   const { t, i18n } = useTranslation();
   const isJapanese = i18n.language === "ja";
   const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -46,8 +51,12 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({ trainingDay, highligh
     <div style={{ marginTop: "20px", padding: "15px", border: "1px solid #ddd" }}>
       <h2><strong>{t("Date")}:</strong> {formatDate(trainingDay.Date)}</h2>
       <p><strong>{t("Weather")}:</strong> {t(trainingDay.Weather)}</p>
-      <p><strong>{t("Location")}:</strong> {t(trainingDay.Location)}</p>
-      <p><strong>{t("Training_Time")}:</strong> {trainingDay.Time?.Start} - {trainingDay.Time?.End}</p>
+      {!guestMode && (
+        <p><strong>{t("Location")}:</strong> {t(trainingDay.Location)}</p>
+      )}
+      {!guestMode && (
+        <p><strong>{t("Training_Time")}:</strong> {trainingDay.Time?.Start} - {trainingDay.Time?.End}</p>
+      )}
 
       <h3>{t("Activities")}:</h3>
       <ul>

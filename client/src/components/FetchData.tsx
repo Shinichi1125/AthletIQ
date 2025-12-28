@@ -96,6 +96,7 @@ const FetchData: React.FC<Props> = ({ idToken, guestMode = false }) => {
         onFilter={handleFilter}
         onClear={handleClear}
         isJapanese={isJapanese}
+        guestMode={guestMode}
         t={t}
       />
 
@@ -103,6 +104,7 @@ const FetchData: React.FC<Props> = ({ idToken, guestMode = false }) => {
         trainingDays={currentData}
         selectedDay={selectedDay}
         onSelect={(day) => setSelectedDay(selectedDay === day ? null : day)}
+        guestMode={guestMode}
       />
 
       <Pagination
@@ -119,6 +121,7 @@ const FetchData: React.FC<Props> = ({ idToken, guestMode = false }) => {
           </button>
           <TrainingDetails
             trainingDay={selectedDay}
+            guestMode={guestMode}
             highlight={{
               activityName: filters.activityName || undefined,
               noteQuery: filters.noteQuery || undefined,

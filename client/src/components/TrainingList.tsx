@@ -6,9 +6,15 @@ interface TrainingListProps {
   trainingDays: any[];
   selectedDay: any | null;
   onSelect: (day: any) => void;
+  guestMode?: boolean;
 }
 
-const TrainingList: React.FC<TrainingListProps> = ({ trainingDays, selectedDay, onSelect }) => {
+const TrainingList: React.FC<TrainingListProps> = ({
+  trainingDays,
+  selectedDay,
+  onSelect,
+  guestMode = false,
+}) => {
   const { t } = useTranslation();
   const lightBlueRgbValue = "#6699ff";
 
@@ -30,7 +36,8 @@ const TrainingList: React.FC<TrainingListProps> = ({ trainingDays, selectedDay, 
               }}
               onClick={() => onSelect(day)}
             >
-              <strong>{formatDate(day.Date)}</strong> - {t(day.Location)}
+              <strong>{formatDate(day.Date)}</strong>
+              {!guestMode && <> - {t(day.Location)}</>}
             </li>
           );
         })}
