@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../i18n";
 import { useTranslation } from "react-i18next";
-import { fetchTrainingData } from "../utils/api";
+import { fetchTrainingData, fetchTrainingDataGuest } from "../utils/api";
 import TrainingList from "./TrainingList";
 import TrainingDetails from "./TrainingDetails";
 import Pagination from "./Pagination";
@@ -9,7 +9,10 @@ import FilterBar from "./FilterBar";
 import { FilterState } from "../types";
 import { filterTrainingDays } from "../utils/filters";
 
-interface Props { idToken?: string | null; }
+interface Props {
+  idToken?: string | null;
+  guestMode?: boolean;
+}
 
 const initialFilters: FilterState = {
   activityName: "",
@@ -29,7 +32,7 @@ const initialFilters: FilterState = {
   noteQuery: "",
 };
 
-const FetchData: React.FC<Props> = ({ idToken }) => {
+const FetchData: React.FC<Props> = ({ idToken, guestMode = false }) => {
   const { t, i18n } = useTranslation();
   const isJapanese = i18n.language === "ja";
   const [data, setData] = useState<any[]>([]);
@@ -49,11 +52,12 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
   const currentData = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
   useEffect(() => {
-    if (!idToken) return;
     setLoading(true);
     (async () => {
       try {
-        const trainingData = await fetchTrainingData(idToken);
+        const trainingData = guestMode
+          ? await fetchTrainingDataGuest()
+          : await fetchTrainingData(idToken ?? undefined);
         setData(trainingData);
         setFilteredData(trainingData);
       } catch (err: any) {
@@ -62,7 +66,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
         setLoading(false);
       }
     })();
-  }, [idToken]);
+  }, [guestMode, idToken]);
 
   const handleFilter = () => {
     const next = filterTrainingDays(data, filters);
@@ -78,7 +82,7 @@ const FetchData: React.FC<Props> = ({ idToken }) => {
     setSelectedDay(null);
   };
 
-  if (!idToken) return <p>{t("Please_Sign_In")}</p>;
+  if (!guestMode && !idToken) return <p>{t("Please_Sign_In")}</p>;
   if (loading) return <p>{t("Loading")}</p>;
   if (error) return <p>Error: {error}</p>;
 

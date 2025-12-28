@@ -14,3 +14,8 @@ export const fetchTrainingData = async (idToken?: string) => {
   const response = await axios.get(API_URL, { headers });
   return response.data;
 };
+
+export const fetchTrainingDataGuest = async () => {
+  const response = await axios.get(`${API_URL}?mode=guest`);
+  return response.data;
+};

@@ -28,6 +28,8 @@ ALLOWED_EMAILS = {
     if e.strip()
 }
 
+SENSITIVE_KEYS_FOR_GUEST = ["Location", "Time", "Notes"]
+
 def _pick_cors_origin(req_origin: str | None) -> str | None:
     """Return the allowed origin to echo back, or None for disallowed/no origin."""
     if not req_origin:
@@ -114,22 +116,34 @@ def validate_json_format(json_string):
         return data
     raise ValueError("JSON data is not an array of objects.")
 
+def sanitize_for_guest(data: list[OrderedDict]) -> list[OrderedDict]:
+    for item in data:
+        for key in SENSITIVE_KEYS_FOR_GUEST:
+            if key in item:
+                del item[key]
+    return data
+
 @functions_framework.http
 def fetch_and_convert(request):
     req_origin = request.headers.get("Origin")
+    mode = request.args.get("mode")
+    is_guest = mode == "guest"
 
     # Preflight
     if request.method == "OPTIONS":
         return cors_response("", 204, req_origin=req_origin)
 
     # AuthN/AuthZ
-    ok, info = verify_id_token(request.headers.get("Authorization"))
-    if not ok:
-        status = 401 if "Token" in str(info) or "Authorization header" in str(info) else 403
-        return cors_response(jsonify({"error": str(info)}), status, req_origin=req_origin)
+    if not is_guest:
+        ok, info = verify_id_token(request.headers.get("Authorization"))
+        if not ok:
+            status = 401 if "Token" in str(info) or "Authorization header" in str(info) else 403
+            return cors_response(jsonify({"error": str(info)}), status, req_origin=req_origin)
 
     try:
         data = fetch_all_docs_json()
+        if is_guest:
+            sanitize_for_guest(data)
 
         # Sort results by Date DESC (newest first)
         from datetime import datetime

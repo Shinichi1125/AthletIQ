@@ -8,6 +8,7 @@ import { initGoogleSignIn, getIdToken } from "./auth/google";
 function App() {
   const { i18n } = useTranslation();
   const [signedIn, setSignedIn] = useState(false);
+  const [guestMode, setGuestMode] = useState(false);
 
   const languages = [
     { code: "en", label: "English" },
@@ -15,7 +16,10 @@ function App() {
   ];
 
   useEffect(() => {
-    initGoogleSignIn(() => setSignedIn(true));
+    initGoogleSignIn(() => {
+      setSignedIn(true);
+      setGuestMode(false);
+    });
   }, []);
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -23,6 +27,11 @@ function App() {
   };
 
   const idToken = getIdToken();
+
+  const handleGuestLogin = () => {
+    setGuestMode(true);
+    setSignedIn(false);
+  };
 
   return (
     <div
@@ -42,14 +51,21 @@ function App() {
       />
 
       <main style={{ padding: "20px" }}>
-        {!signedIn && (
+        {!signedIn && !guestMode && (
           <div style={{ margin: "20px 0" }}>
             <div id="googleSignInBtn" />
+            <button onClick={handleGuestLogin} style={{ marginTop: "12px" }}>
+              Log in as guest
+            </button>
           </div>
         )}
 
         {signedIn && (
-          <FetchData idToken={idToken} />
+          <FetchData idToken={idToken} guestMode={false} />
+        )}
+
+        {guestMode && (
+          <FetchData idToken={null} guestMode={true} />
         )}
       </main>
     </div>
