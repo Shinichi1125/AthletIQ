@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { initGoogleSignIn, getIdToken } from "./auth/google";
 
 function App() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [signedIn, setSignedIn] = useState(false);
   const [guestMode, setGuestMode] = useState(false);
 
@@ -55,7 +55,7 @@ function App() {
           <div style={{ margin: "20px 0" }}>
             <div id="googleSignInBtn" />
             <button onClick={handleGuestLogin} style={{ marginTop: "12px" }}>
-              Log in as guest
+              {t("Log_In_As_Guest")}
             </button>
           </div>
         )}
