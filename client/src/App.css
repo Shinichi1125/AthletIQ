@@ -62,9 +62,13 @@ button:focus {
 }
 
 .highlight-activity {
-  background: rgba(209, 216, 0, 0.614);
-  border-radius: 8px;
-  padding: 10px;
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(255, 235, 59, 0.55);
+  line-height: 1.35;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 mark {
