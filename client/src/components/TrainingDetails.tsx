@@ -61,7 +61,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({
       <h3>{t("Activities")}:</h3>
       <ul>
         {trainingDay.Activities.map((activity: any, index: number) => (
-          <li key={index} style={{ marginBottom: "10px" }}>
+          <li key={index} className="activity-item" style={{ marginBottom: "10px" }}>
             {(() => {
               const activityType = isActivitySprintSets(activity) ? "Sprint_Sets" : activity.Activity;
               const highlightFlag: boolean = activityMatchesHighlight(activity);

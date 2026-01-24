@@ -76,3 +76,17 @@ mark {
   padding: 0 2px;
   border-radius: 2px;
 }
+
+.activity-item {
+  list-style: none;
+  position: relative;
+  padding-left: 1.1em;
+}
+
+.activity-item::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  line-height: 1;
+}
