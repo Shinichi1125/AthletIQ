@@ -30,7 +30,8 @@
   min-height: 1em;
   margin-top: 4px;
   font-size: 0.8rem;
-  color: #c0392b;
+  color: #e74c3c;
+  font-weight: 600;
 }
 
 .filter-actions {
