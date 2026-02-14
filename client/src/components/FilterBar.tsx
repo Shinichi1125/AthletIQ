@@ -53,8 +53,21 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const showRepsInputs = showWeightInputs || activityCondition || isRepsBasedCalisthenics({ Activity: activityName });
   const showSetCountInput = Boolean(activityName);
 
+  const minTime = parseFloat(timeMin);
+  const maxTime = parseFloat(timeMax);
+  const minSplitDiff = parseFloat(splitDiffMin);
+  const maxSplitDiff = parseFloat(splitDiffMax);
+
+  const isTimeRangeInvalid = !Number.isNaN(minTime) && !Number.isNaN(maxTime) && minTime > maxTime;
+  const isSplitDiffRangeInvalid =
+    !Number.isNaN(minSplitDiff) && !Number.isNaN(maxSplitDiff) && minSplitDiff > maxSplitDiff;
+
   const hasDateRange = Boolean(startDate && endDate);
-  const isFilterDisabled = (!activityName && noteQuery === '' && !hasDateRange) || (showConditionDropdown && !activityCondition);
+  const isFilterDisabled =
+    (!activityName && noteQuery === '' && !hasDateRange) ||
+    (showConditionDropdown && !activityCondition) ||
+    isTimeRangeInvalid ||
+    isSplitDiffRangeInvalid;
 
   return (
     <div className="filter-bar">
@@ -103,6 +116,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={timeMin}
               placeholder={t("Min")}
               onChange={(e) => onChange({ timeMin: e.target.value })}
+              aria-invalid={isTimeRangeInvalid || undefined}
               style={{ width: 80 }}
             />
             <span style={{ alignSelf: "center" }}>–</span>
@@ -111,10 +125,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={timeMax}
               placeholder={t("Max")}
               onChange={(e) => onChange({ timeMax: e.target.value })}
+              aria-invalid={isTimeRangeInvalid || undefined}
               style={{ width: 80 }}
             />
           </div>
-          <div className="filter-error" />
+          <div className="filter-error">
+            {isTimeRangeInvalid ? t("Min_Less_Than_Or_Equal_Max") : ""}
+          </div>
         </div>
       )}
 
@@ -128,6 +145,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               placeholder={t("Min")}
               onChange={(e) => onChange({ splitDiffMin: e.target.value })}
               pattern="^-?\d+(\.\d+)?$"
+              aria-invalid={isSplitDiffRangeInvalid || undefined}
               style={{ width: 80 }}
             />
             <span style={{ alignSelf: "center" }}>–</span>
@@ -137,10 +155,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
               placeholder={t("Max")}
               onChange={(e) => onChange({ splitDiffMax: e.target.value })}
               pattern="^-?\d+(\.\d+)?$"
+              aria-invalid={isSplitDiffRangeInvalid || undefined}
               style={{ width: 80 }}
             />
           </div>
-          <div className="filter-error" />
+          <div className="filter-error">
+            {isSplitDiffRangeInvalid ? t("Min_Less_Than_Or_Equal_Max") : ""}
+          </div>
         </div>
       )}
 
