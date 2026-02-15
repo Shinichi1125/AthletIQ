@@ -34,7 +34,7 @@ describe("filterTrainingDays", () => {
     const filters = makeFilters({ activityName: "Plank" });
     const result = filterTrainingDays(trainingDays, filters);
 
-    expect(result).toHaveLength(4);
+    expect(result).toHaveLength(2);
     expect(result.map((day) => day.Date)).toEqual(["2024-01-01", "2024-01-03"]);
   });
 
