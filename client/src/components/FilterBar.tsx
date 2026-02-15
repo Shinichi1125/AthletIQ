@@ -37,6 +37,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     timeMin, timeMax,
     splitDiffMin, splitDiffMax,
     weightMin, weightMax,
+    repsMin, repsMax,
     shoes,
     startDate, endDate,
     noteQuery,
@@ -60,12 +61,16 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const maxSplitDiff = parseFloat(splitDiffMax);
   const minWeight = parseFloat(weightMin);
   const maxWeight = parseFloat(weightMax);
+  const minReps = parseFloat(repsMin);
+  const maxReps = parseFloat(repsMax);
 
   const isTimeRangeInvalid = !Number.isNaN(minTime) && !Number.isNaN(maxTime) && minTime > maxTime;
   const isSplitDiffRangeInvalid =
     !Number.isNaN(minSplitDiff) && !Number.isNaN(maxSplitDiff) && minSplitDiff > maxSplitDiff;
   const isWeightRangeInvalid =
     !Number.isNaN(minWeight) && !Number.isNaN(maxWeight) && minWeight > maxWeight;
+  const isRepsRangeInvalid =
+    !Number.isNaN(minReps) && !Number.isNaN(maxReps) && minReps > maxReps;
 
   const hasDateRange = Boolean(startDate && endDate);
   const isFilterDisabled =
@@ -73,7 +78,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
     (showConditionDropdown && !activityCondition) ||
     isTimeRangeInvalid ||
     isSplitDiffRangeInvalid ||
-    isWeightRangeInvalid;
+    isWeightRangeInvalid ||
+    isRepsRangeInvalid;
 
   return (
     <div className="filter-bar">
@@ -224,21 +230,25 @@ const FilterBar: React.FC<FilterBarProps> = ({
           <div style={{ display: "flex", gap: 6 }}>
             <input
               type="number"
-              value={filters.repsMin}
+              value={repsMin}
               placeholder={t("Min")}
               onChange={(e) => onChange({ repsMin: e.target.value })}
+              aria-invalid={isRepsRangeInvalid || undefined}
               style={{ width: 80 }}
             />
             <span style={{ alignSelf: "center" }}>–</span>
             <input
               type="number"
-              value={filters.repsMax}
+              value={repsMax}
               placeholder={t("Max")}
               onChange={(e) => onChange({ repsMax: e.target.value })}
+              aria-invalid={isRepsRangeInvalid || undefined}
               style={{ width: 80 }}
             />
           </div>
-          <div className="filter-error" />
+          <div className="filter-error">
+            {isRepsRangeInvalid ? t("Min_Less_Than_Or_Equal_Max") : ""}
+          </div>
         </div>
       )}
 
