@@ -1,9 +1,14 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './App';
+jest.mock("./components/FetchData", () => () => <div>FetchData Mock</div>);
+jest.mock("./auth/google", () => ({
+  initGoogleSignIn: (cb: any) => {},
+  getIdToken: () => null,
+}));
 
-test('renders learn react link', () => {
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import App from "./App";
+
+test("renders app shell", () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByText("AthletIQ")).toBeInTheDocument();
 });
