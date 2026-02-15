@@ -102,6 +102,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           <select
             value={activityName}
             onChange={(e) => onChange({ activityName: e.target.value })}
+            aria-label={t("Activity_Name")}
           >
             <option value="">{t("Select_Activity")}</option>
             {activityOptions.map((activity) => (
@@ -117,12 +118,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
       {showConditionDropdown && (
         <div className="filter-field">
           <div>
-            <select
-              value={activityCondition}
-              onChange={(e) => onChange({ activityCondition: e.target.value })}
-            >
-              <option value="">{t("Select_Condition")}</option>
-              {activityConditions.map((cond) => (
+          <select
+            value={activityCondition}
+            onChange={(e) => onChange({ activityCondition: e.target.value })}
+            aria-label={t("Condition")}
+          >
+            <option value="">{t("Select_Condition")}</option>
+            {activityConditions.map((cond) => (
                 <option key={cond} value={cond}>
                   {t(cond)}
                 </option>
@@ -196,12 +198,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
       {showShoesDropdown && (
         <div className="filter-field">
           <div>
-            <select
-              value={shoes}
-              onChange={(e) => onChange({ shoes: e.target.value })}
-            >
-              <option value="">{t("Select_Shoes")}</option>
-              {shoesType.map((shoe) => (
+          <select
+            value={shoes}
+            onChange={(e) => onChange({ shoes: e.target.value })}
+            aria-label={t("Shoes")}
+          >
+            <option value="">{t("Select_Shoes")}</option>
+            {shoesType.map((shoe) => (
                 <option key={shoe} value={shoe}>
                   {t(shoe)}
                 </option>
@@ -314,6 +317,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             value={startDate}
             onChange={(e) => onChange({ startDate: e.target.value })}
             aria-invalid={isDateRangeInvalid || undefined}
+            aria-label={t("Date_Range")}
           />
           <span style={{ alignSelf: "center" }}>—</span>
           <input
@@ -321,6 +325,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             value={endDate}
             onChange={(e) => onChange({ endDate: e.target.value })}
             aria-invalid={isDateRangeInvalid || undefined}
+            aria-label={t("Date_Range")}
           />
         </div>
         <div className="filter-error">
