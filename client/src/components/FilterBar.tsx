@@ -63,23 +63,35 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const maxWeight = parseFloat(weightMax);
   const minReps = parseFloat(repsMin);
   const maxReps = parseFloat(repsMax);
+  const setCountValue = parseFloat(setCount);
 
   const isTimeRangeInvalid = !Number.isNaN(minTime) && !Number.isNaN(maxTime) && minTime > maxTime;
+  const hasNegativeTime =
+    (!Number.isNaN(minTime) && minTime < 0) || (!Number.isNaN(maxTime) && maxTime < 0);
   const isSplitDiffRangeInvalid =
     !Number.isNaN(minSplitDiff) && !Number.isNaN(maxSplitDiff) && minSplitDiff > maxSplitDiff;
   const isWeightRangeInvalid =
     !Number.isNaN(minWeight) && !Number.isNaN(maxWeight) && minWeight > maxWeight;
+  const hasNegativeWeight =
+    (!Number.isNaN(minWeight) && minWeight < 0) || (!Number.isNaN(maxWeight) && maxWeight < 0);
   const isRepsRangeInvalid =
     !Number.isNaN(minReps) && !Number.isNaN(maxReps) && minReps > maxReps;
+  const hasNegativeReps =
+    (!Number.isNaN(minReps) && minReps < 0) || (!Number.isNaN(maxReps) && maxReps < 0);
+  const hasNegativeSetCount = !Number.isNaN(setCountValue) && setCountValue < 0;
 
   const hasDateRange = Boolean(startDate && endDate);
   const isFilterDisabled =
     (!activityName && noteQuery === '' && !hasDateRange) ||
     (showConditionDropdown && !activityCondition) ||
     isTimeRangeInvalid ||
+    hasNegativeTime ||
     isSplitDiffRangeInvalid ||
     isWeightRangeInvalid ||
-    isRepsRangeInvalid;
+    hasNegativeWeight ||
+    isRepsRangeInvalid ||
+    hasNegativeReps ||
+    hasNegativeSetCount;
 
   return (
     <div className="filter-bar">
@@ -128,7 +140,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={timeMin}
               placeholder={t("Min")}
               onChange={(e) => onChange({ timeMin: e.target.value })}
-              aria-invalid={isTimeRangeInvalid || undefined}
+              aria-invalid={isTimeRangeInvalid || hasNegativeTime || undefined}
               style={{ width: 80 }}
             />
             <span style={{ alignSelf: "center" }}>–</span>
@@ -137,12 +149,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={timeMax}
               placeholder={t("Max")}
               onChange={(e) => onChange({ timeMax: e.target.value })}
-              aria-invalid={isTimeRangeInvalid || undefined}
+              aria-invalid={isTimeRangeInvalid || hasNegativeTime || undefined}
               style={{ width: 80 }}
             />
           </div>
           <div className="filter-error">
-            {isTimeRangeInvalid ? t("Min_Less_Than_Or_Equal_Max") : ""}
+            {isTimeRangeInvalid
+              ? t("Min_Less_Than_Or_Equal_Max")
+              : (hasNegativeTime ? t("Non_Negative_Only") : "")}
           </div>
         </div>
       )}
@@ -205,7 +219,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={weightMin}
               placeholder={t("Min")}
               onChange={(e) => onChange({ weightMin: e.target.value })}
-              aria-invalid={isWeightRangeInvalid || undefined}
+              aria-invalid={isWeightRangeInvalid || hasNegativeWeight || undefined}
               style={{ width: 80 }}
             />
             <span style={{ alignSelf: "center" }}>–</span>
@@ -214,12 +228,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={weightMax}
               placeholder={t("Max")}
               onChange={(e) => onChange({ weightMax: e.target.value })}
-              aria-invalid={isWeightRangeInvalid || undefined}
+              aria-invalid={isWeightRangeInvalid || hasNegativeWeight || undefined}
               style={{ width: 80 }}
             />
           </div>
           <div className="filter-error">
-            {isWeightRangeInvalid ? t("Min_Less_Than_Or_Equal_Max") : ""}
+            {isWeightRangeInvalid
+              ? t("Min_Less_Than_Or_Equal_Max")
+              : (hasNegativeWeight ? t("Non_Negative_Only") : "")}
           </div>
         </div>
       )}
@@ -233,7 +249,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={repsMin}
               placeholder={t("Min")}
               onChange={(e) => onChange({ repsMin: e.target.value })}
-              aria-invalid={isRepsRangeInvalid || undefined}
+              aria-invalid={isRepsRangeInvalid || hasNegativeReps || undefined}
               style={{ width: 80 }}
             />
             <span style={{ alignSelf: "center" }}>–</span>
@@ -242,12 +258,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={repsMax}
               placeholder={t("Max")}
               onChange={(e) => onChange({ repsMax: e.target.value })}
-              aria-invalid={isRepsRangeInvalid || undefined}
+              aria-invalid={isRepsRangeInvalid || hasNegativeReps || undefined}
               style={{ width: 80 }}
             />
           </div>
           <div className="filter-error">
-            {isRepsRangeInvalid ? t("Min_Less_Than_Or_Equal_Max") : ""}
+            {isRepsRangeInvalid
+              ? t("Min_Less_Than_Or_Equal_Max")
+              : (hasNegativeReps ? t("Non_Negative_Only") : "")}
           </div>
         </div>
       )}
@@ -262,10 +280,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={setCount}
               placeholder={t("Set_Count")}
               onChange={(e) => onChange({ setCount: e.target.value })}
+              aria-invalid={hasNegativeSetCount || undefined}
               style={{ width: 80 }}
             />
           </div>
-          <div className="filter-error" />
+          <div className="filter-error">
+            {hasNegativeSetCount ? t("Non_Negative_Only") : ""}
+          </div>
         </div>
       )}
 

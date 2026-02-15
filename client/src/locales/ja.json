@@ -88,5 +88,6 @@
   "Notes": "備考",
   "Enter_Keyword": "備考欄のキーワードで絞り込み",
   "Set_Count": "セット数",
-  "Min_Less_Than_Or_Equal_Max": "最小値は最大値以下にしてください"
+  "Min_Less_Than_Or_Equal_Max": "最小値は最大値以下にしてください",
+  "Non_Negative_Only": "0以上の値を入力してください"
 }
