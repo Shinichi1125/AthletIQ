@@ -36,6 +36,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     activityCondition,
     timeMin, timeMax,
     splitDiffMin, splitDiffMax,
+    weightMin, weightMax,
     shoes,
     startDate, endDate,
     noteQuery,
@@ -57,17 +58,22 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const maxTime = parseFloat(timeMax);
   const minSplitDiff = parseFloat(splitDiffMin);
   const maxSplitDiff = parseFloat(splitDiffMax);
+  const minWeight = parseFloat(weightMin);
+  const maxWeight = parseFloat(weightMax);
 
   const isTimeRangeInvalid = !Number.isNaN(minTime) && !Number.isNaN(maxTime) && minTime > maxTime;
   const isSplitDiffRangeInvalid =
     !Number.isNaN(minSplitDiff) && !Number.isNaN(maxSplitDiff) && minSplitDiff > maxSplitDiff;
+  const isWeightRangeInvalid =
+    !Number.isNaN(minWeight) && !Number.isNaN(maxWeight) && minWeight > maxWeight;
 
   const hasDateRange = Boolean(startDate && endDate);
   const isFilterDisabled =
     (!activityName && noteQuery === '' && !hasDateRange) ||
     (showConditionDropdown && !activityCondition) ||
     isTimeRangeInvalid ||
-    isSplitDiffRangeInvalid;
+    isSplitDiffRangeInvalid ||
+    isWeightRangeInvalid;
 
   return (
     <div className="filter-bar">
@@ -190,21 +196,25 @@ const FilterBar: React.FC<FilterBarProps> = ({
           <div style={{ display: "flex", gap: 6 }}>
             <input
               type="number"
-              value={filters.weightMin}
+              value={weightMin}
               placeholder={t("Min")}
               onChange={(e) => onChange({ weightMin: e.target.value })}
+              aria-invalid={isWeightRangeInvalid || undefined}
               style={{ width: 80 }}
             />
             <span style={{ alignSelf: "center" }}>–</span>
             <input
               type="number"
-              value={filters.weightMax}
+              value={weightMax}
               placeholder={t("Max")}
               onChange={(e) => onChange({ weightMax: e.target.value })}
+              aria-invalid={isWeightRangeInvalid || undefined}
               style={{ width: 80 }}
             />
           </div>
-          <div className="filter-error" />
+          <div className="filter-error">
+            {isWeightRangeInvalid ? t("Min_Less_Than_Or_Equal_Max") : ""}
+          </div>
         </div>
       )}
 
