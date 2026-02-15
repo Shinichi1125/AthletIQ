@@ -65,6 +65,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const maxReps = parseFloat(repsMax);
   const setCountValue = parseFloat(setCount);
 
+  const isDateRangeInvalid = Boolean(startDate && endDate && startDate > endDate);
   const isTimeRangeInvalid = !Number.isNaN(minTime) && !Number.isNaN(maxTime) && minTime > maxTime;
   const hasNegativeTime =
     (!Number.isNaN(minTime) && minTime < 0) || (!Number.isNaN(maxTime) && maxTime < 0);
@@ -84,6 +85,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const isFilterDisabled =
     (!activityName && noteQuery === '' && !hasDateRange) ||
     (showConditionDropdown && !activityCondition) ||
+    isDateRangeInvalid ||
     isTimeRangeInvalid ||
     hasNegativeTime ||
     isSplitDiffRangeInvalid ||
@@ -311,15 +313,19 @@ const FilterBar: React.FC<FilterBarProps> = ({
             type="date"
             value={startDate}
             onChange={(e) => onChange({ startDate: e.target.value })}
+            aria-invalid={isDateRangeInvalid || undefined}
           />
           <span style={{ alignSelf: "center" }}>—</span>
           <input
             type="date"
             value={endDate}
             onChange={(e) => onChange({ endDate: e.target.value })}
+            aria-invalid={isDateRangeInvalid || undefined}
           />
         </div>
-        <div className="filter-error" />
+        <div className="filter-error">
+          {isDateRangeInvalid ? t("Date_Range_Invalid") : ""}
+        </div>
       </div>
 
       <div className="filter-actions">

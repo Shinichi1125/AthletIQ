@@ -89,5 +89,6 @@
   "Enter_Keyword": "備考欄のキーワードで絞り込み",
   "Set_Count": "セット数",
   "Min_Less_Than_Or_Equal_Max": "最小値は最大値以下にしてください",
-  "Non_Negative_Only": "0以上の値を入力してください"
+  "Non_Negative_Only": "0以上の値を入力してください",
+  "Date_Range_Invalid": "終了日は開始日以降にしてください"
 }
