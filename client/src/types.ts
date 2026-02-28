@@ -52,11 +52,18 @@ export interface UnitValue {
   Unit: string;
 }
 
+export interface SingleLimbTime {
+  Left_Arm?: UnitValue;
+  Right_Arm?: UnitValue;
+  Left_Leg?: UnitValue;
+  Right_Leg?: UnitValue;
+}
+
 export interface StrengthSet {
   Set: number;
   Reps?: number | SingleLimbReps;
   Weight?: UnitValue;
-  Time?: UnitValue;
+  Time?: UnitValue | SingleLimbTime;
   Hops?: number;
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Activity, SingleLimbReps, StrengthSet } from "../types";
+import { Activity, SingleLimbReps, SingleLimbTime, StrengthSet } from "../types";
 import { useTranslation } from "react-i18next";
 
 interface SingleLimbProps {
@@ -34,6 +34,15 @@ const SingleLimbExerciseDetails: React.FC<SingleLimbProps> = ({ activity, highli
                   )}
                   {typeof set.Reps === "number" && (
                     <li>{t("Reps")}: {set.Reps}</li>
+                  )}
+                  {typeof set.Time === "object" && set.Time && (
+                    <>
+                      {Object.entries(set.Time as SingleLimbTime).map(([side, time]) => (
+                        <li key={side}>
+                          {t(side)} {(t("Time"))}: {time.Value}{t(time.Unit)}
+                        </li>
+                      ))}
+                    </>
                   )}
                 </ul>
               </li>

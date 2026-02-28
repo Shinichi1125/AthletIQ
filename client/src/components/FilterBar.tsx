@@ -1,5 +1,5 @@
 import React from "react";
-import { activityOptions, activityConditions, shoesType } from "../constants/activityOptions";
+import { activityOptions, oneHandPullupsConditions, oneHandHoldConditions, shoesType } from "../constants/activityOptions";
 import {
   isActivitySprintSets,
   isActivityShortSprint,
@@ -44,7 +44,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
     setCount
   } = filters;
 
-  const showConditionDropdown = activityName === "One_Hand_Pullups";
+  const showConditionDropdown =
+    activityName === "One_Hand_Pullups" || activityName === "One_Hand_Hold";
+  const conditionOptions =
+    activityName === "One_Hand_Pullups"
+      ? oneHandPullupsConditions
+      : activityName === "One_Hand_Hold"
+      ? oneHandHoldConditions
+      : [];
   const showTimeInputs =
     isActivitySprintSets({ Activity: activityName }) ||
     isActivityTempoRun({ Activity: activityName }) ||
@@ -124,7 +131,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             aria-label={t("Condition")}
           >
             <option value="">{t("Select_Condition")}</option>
-            {activityConditions.map((cond) => (
+            {conditionOptions.map((cond) => (
                 <option key={cond} value={cond}>
                   {t(cond)}
                 </option>

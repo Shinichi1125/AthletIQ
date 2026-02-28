@@ -6,6 +6,7 @@ export const activityOptions = [
   "Single_Leg_Squats",
   "Archer_Pullups",
   "One_Hand_Pullups",
+  "One_Hand_Hold",
   "Power_Clean",
   "Power_Clean_and_Jerk",
   "Hang_Power_Clean",
@@ -30,10 +31,17 @@ export const activityOptions = [
   "50m_Dash",
 ];
 
-export const activityConditions = [
+export const oneHandPullupsConditions = [
   "Rope_Assisted",
   "With_Support_Hand",
-  "Negative"
+  "Negative",
+  "Without_Support"
+];
+
+export const oneHandHoldConditions = [
+  "With_2_Finger_Support",
+  "With_1_Finger_Support",
+  "Without_Support"
 ];
 
 export const shoesType = [

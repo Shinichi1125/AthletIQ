@@ -76,6 +76,25 @@ describe("FilterBar", () => {
     expect(filterButton).toBeEnabled();
   });
 
+  it('when Activity is "One_Hand_Hold", condition dropdown uses one-hand-hold options and Filter stays disabled until condition chosen', async () => {
+    renderFilterBar();
+
+    const filterButton = screen.getByRole("button", { name: "Filter" });
+    const activitySelect = screen.getByLabelText("Activity_Name");
+    userEvent.selectOptions(activitySelect, "One_Hand_Hold");
+
+    const conditionSelect = screen.getByLabelText("Condition");
+    expect(conditionSelect).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "With_2_Finger_Support" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "With_1_Finger_Support" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Without_Support" })).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "Rope_Assisted" })).toBeNull();
+    expect(filterButton).toBeDisabled();
+
+    userEvent.selectOptions(conditionSelect, "With_1_Finger_Support");
+    expect(filterButton).toBeEnabled();
+  });
+
   it("click Filter calls onFilter once (when enabled)", async () => {
     const { onFilter } = renderFilterBar({ activityName: "Plank" });
 

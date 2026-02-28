@@ -74,6 +74,7 @@ const TrainingDetails: React.FC<TrainingDetailsProps> = ({
                 case "One_Hand_Pushups":
                 case "Single_Leg_Squats":
                 case "One_Hand_Pullups":
+                case "One_Hand_Hold":
                   return <SingleLimbExerciseDetails activity={activity} highlightFlag={highlightFlag} />;
 
                 case "Power_Clean":
