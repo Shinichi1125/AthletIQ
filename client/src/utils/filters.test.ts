@@ -64,4 +64,55 @@ describe("filterTrainingDays", () => {
 
     expect(result).toHaveLength(0);
   });
+
+  it("time-based single-limb exercise (One_Hand_Hold) filters by condition and per-side time", () => {
+    const oneHandHoldDays = [
+      {
+        Date: "2024-02-01",
+        Activities: [
+          {
+            Activity: "One_Hand_Hold",
+            Condition: "With_1_Finger_Support",
+            Sets: [
+              {
+                Set: 1,
+                Time: {
+                  Left_Arm: { Value: 8, Unit: "seconds" },
+                  Right_Arm: { Value: 12, Unit: "seconds" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        Date: "2024-02-02",
+        Activities: [
+          {
+            Activity: "One_Hand_Hold",
+            Condition: "With_2_Finger_Support",
+            Sets: [
+              {
+                Set: 1,
+                Time: {
+                  Left_Arm: { Value: 7, Unit: "seconds" },
+                  Right_Arm: { Value: 9, Unit: "seconds" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    const filters = makeFilters({
+      activityName: "One_Hand_Hold",
+      activityCondition: "With_1_Finger_Support",
+      timeMin: "10",
+      timeMax: "13",
+    });
+
+    const result = filterTrainingDays(oneHandHoldDays as any[], filters);
+    expect(result.map((day) => day.Date)).toEqual(["2024-02-01"]);
+  });
 });

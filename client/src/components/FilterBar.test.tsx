@@ -95,6 +95,16 @@ describe("FilterBar", () => {
     expect(filterButton).toBeEnabled();
   });
 
+  it('when Activity is "One_Hand_Hold", time range is shown and reps range is hidden', async () => {
+    renderFilterBar();
+
+    const activitySelect = screen.getByLabelText("Activity_Name");
+    userEvent.selectOptions(activitySelect, "One_Hand_Hold");
+
+    expect(screen.getByText("Time_Range")).toBeInTheDocument();
+    expect(screen.queryByText("Reps_Range")).toBeNull();
+  });
+
   it("click Filter calls onFilter once (when enabled)", async () => {
     const { onFilter } = renderFilterBar({ activityName: "Plank" });
 

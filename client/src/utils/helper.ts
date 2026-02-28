@@ -76,11 +76,16 @@ export const asSeconds = (time: any): number | undefined => {
   return val;
 };
 
-export const isSingleLimbExercise = (activity: { Activity: string }) => {
+export const isRepsBasedSingleLimbExercise = (activity: { Activity: string }) => {
   const a = activity.Activity;
   return (
     a === "One_Hand_Pushups" ||
     a === "Single_Leg_Squats" ||
     a === "One_Hand_Pullups"
   );
+};
+
+export const isTimeBasedSingleLimbExercise = (activity: { Activity: string }) => {
+  const a = activity.Activity;
+  return a === "One_Hand_Hold";
 };

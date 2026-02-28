@@ -7,7 +7,8 @@ import {
   isWeightTraining,
   isTimeBasedCalisthenics,
   isRepsBasedCalisthenics,
-  isSingleLimbExercise
+  isRepsBasedSingleLimbExercise,
+  isTimeBasedSingleLimbExercise
  } from "../utils/helper";
 import { FilterState } from "../types";
 import "./FilterBar.css";
@@ -55,11 +56,18 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const showTimeInputs =
     isActivitySprintSets({ Activity: activityName }) ||
     isActivityTempoRun({ Activity: activityName }) ||
-    isTimeBasedCalisthenics({ Activity: activityName });
+    isTimeBasedCalisthenics({ Activity: activityName }) ||
+    isTimeBasedSingleLimbExercise({ Activity: activityName });
   const showSplitDiffInputs = isActivitySprintSets({ Activity: activityName }) && !isActivityShortSprint({ Activity: activityName });
   const showShoesDropdown = isActivitySprintSets({ Activity: activityName });
-  const showWeightInputs = isWeightTraining({ Activity: activityName }) || isSingleLimbExercise({ Activity: activityName });;
-  const showRepsInputs = showWeightInputs || activityCondition || isRepsBasedCalisthenics({ Activity: activityName });
+  const showWeightInputs =
+    isWeightTraining({ Activity: activityName }) ||
+    isRepsBasedSingleLimbExercise({ Activity: activityName }) ||
+    isTimeBasedSingleLimbExercise({ Activity: activityName });
+  const showRepsInputs =
+    isWeightTraining({ Activity: activityName }) ||
+    isRepsBasedSingleLimbExercise({ Activity: activityName }) ||
+    isRepsBasedCalisthenics({ Activity: activityName });
   const showSetCountInput = Boolean(activityName);
 
   const minTime = parseFloat(timeMin);

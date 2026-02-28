@@ -1,4 +1,4 @@
-import { Activity, SprintSet, StrengthSet, SingleLimbReps } from "../types";
+import { Activity, SprintSet, StrengthSet, SingleLimbReps, SingleLimbTime } from "../types";
 import { FilterState, UnitValue } from "../types";
 import {
   isWeightTraining,
@@ -8,7 +8,8 @@ import {
   isRepsBasedCalisthenics,
   isTimeBasedCalisthenics,
   asSeconds,
-  isSingleLimbExercise
+  isRepsBasedSingleLimbExercise,
+  isTimeBasedSingleLimbExercise
 } from "./helper";
 
 function notesText(day: any): string {
@@ -80,7 +81,7 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
       if (activityName === '') return true;
       if (activityName !== activity.Activity) return false;
 
-      if (activity.Activity === "One_Hand_Pullups" && activityCondition) {
+      if ((activity.Activity === "One_Hand_Pullups" || activity.Activity === "One_Hand_Hold") && activityCondition) {
         if (activity.Condition !== activityCondition) return false;
       }
 
@@ -149,11 +150,7 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
         if (requiresSetCount) return false;
       }
 
-      if (isSingleLimbExercise(activity)) {
-        if (activity.Activity === "One_Hand_Pullups" && activityCondition) {
-          if (activity.Condition !== activityCondition) return false;
-        }
-
+      if (isRepsBasedSingleLimbExercise(activity)) {
         const hasWeight = !Number.isNaN(minWeight) || !Number.isNaN(maxWeight);
         const hasReps   = !Number.isNaN(minReps)   || !Number.isNaN(maxReps);
 
@@ -191,6 +188,50 @@ export function filterTrainingDays(data: any[], filters: FilterState): any[] {
         }
 
         return requiresSetCount ? false : !hasWeight && !hasReps;
+      }
+
+      if (isTimeBasedSingleLimbExercise(activity)) {
+        const hasWeight = !Number.isNaN(minWeight) || !Number.isNaN(maxWeight);
+        const hasTime = !Number.isNaN(minTime) || !Number.isNaN(maxTime);
+
+        if (!hasWeight && !hasTime && !requiresSetCount) return true;
+
+        if (activity.Sets && (activity.Sets as StrengthSet[]).length > 0) {
+          return hasMatchingSets(activity.Sets as StrengthSet[], (set) => {
+            const weightUnitValue = activity.Weight as UnitValue | undefined;
+            const weight = weightUnitValue?.Value;
+
+            const timeValues = (() => {
+              if (!set.Time || typeof set.Time !== "object") return [] as number[];
+              if ("Value" in set.Time && typeof set.Time.Value === "number") {
+                const secs = asSeconds(set.Time);
+                return typeof secs === "number" ? [secs] : [];
+              }
+
+              return Object.values(set.Time as SingleLimbTime)
+                .map((unitValue) => asSeconds(unitValue))
+                .filter((secs): secs is number => typeof secs === "number");
+            })();
+
+            const weightOK =
+              !hasWeight ||
+              ((weight ?? Number.NEGATIVE_INFINITY) >= (Number.isNaN(minWeight) ? -Infinity : minWeight) &&
+               (weight ?? Number.POSITIVE_INFINITY) <= (Number.isNaN(maxWeight) ? +Infinity : maxWeight));
+
+            const timeOK =
+              !hasTime ||
+              timeValues.some((secs) =>
+                (Number.isNaN(minTime) || secs >= minTime) &&
+                (Number.isNaN(maxTime) || secs <= maxTime)
+              );
+
+            if (hasWeight && hasTime) return weightOK && timeOK;
+            if (hasWeight) return weightOK;
+            return timeOK;
+          });
+        }
+
+        return requiresSetCount ? false : !hasWeight && !hasTime;
       }
 
       if (isRepsBasedCalisthenics(activity)) {
