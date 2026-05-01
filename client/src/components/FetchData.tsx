@@ -39,7 +39,7 @@ const FetchData: React.FC<Props> = ({ idToken, guestMode = false }) => {
   const [filteredData, setFilteredData] = useState<any[]>([]);
   const [selectedDay, setSelectedDay] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [filters, setFilters] = useState<FilterState>(initialFilters);
@@ -53,6 +53,7 @@ const FetchData: React.FC<Props> = ({ idToken, guestMode = false }) => {
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
     (async () => {
       try {
         const trainingData = guestMode
