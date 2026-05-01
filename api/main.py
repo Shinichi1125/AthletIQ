@@ -1,6 +1,7 @@
 import os
 import json
-from collections import OrderedDict
+import time
+from collections import OrderedDict, defaultdict, deque
 
 import functions_framework
 from flask import jsonify, make_response, request
@@ -29,6 +30,26 @@ ALLOWED_EMAILS = {
 }
 
 SENSITIVE_KEYS_FOR_GUEST = ["Location", "Time", "Notes"]
+
+RATE_LIMIT_WINDOW_SECONDS = 60
+RATE_LIMIT_MAX_REQUESTS = 20
+
+request_log = defaultdict(deque)
+
+def is_rate_limited(ip: str) -> bool:
+    """Check if IP has exceeded rate limit within the window."""
+    now = time.time()
+    window_start = now - RATE_LIMIT_WINDOW_SECONDS
+    timestamps = request_log[ip]
+
+    while timestamps and timestamps[0] < window_start:
+        timestamps.popleft()
+
+    if len(timestamps) >= RATE_LIMIT_MAX_REQUESTS:
+        return True
+
+    timestamps.append(now)
+    return False
 
 def _pick_cors_origin(req_origin: str | None) -> str | None:
     """Return the allowed origin to echo back, or None for disallowed/no origin."""
@@ -132,6 +153,16 @@ def fetch_and_convert(request):
     # Preflight
     if request.method == "OPTIONS":
         return cors_response("", 204, req_origin=req_origin)
+
+    # Rate limiting for guest users
+    if is_guest:
+        client_ip = request.headers.get("X-Forwarded-For", request.remote_addr or "unknown").split(",")[0].strip()
+        if is_rate_limited(client_ip):
+            return cors_response(
+                jsonify({"error": "Too many requests. Please try again later."}),
+                429,
+                req_origin=req_origin,
+            )
 
     # AuthN/AuthZ
     if not is_guest:
