@@ -32,7 +32,7 @@ ALLOWED_EMAILS = {
 SENSITIVE_KEYS_FOR_GUEST = ["Location", "Time", "Notes"]
 
 RATE_LIMIT_WINDOW_SECONDS = 60
-RATE_LIMIT_MAX_REQUESTS = 20
+RATE_LIMIT_MAX_REQUESTS = 10
 
 request_log = defaultdict(deque)
 
